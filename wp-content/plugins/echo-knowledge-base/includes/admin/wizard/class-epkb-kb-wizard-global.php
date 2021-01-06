@@ -95,7 +95,9 @@ class EPKB_KB_Wizard_Global {
 
 			<div id="epkb-wsb-step-1-panel" class="epkb-wc-step-panel eckb-wizard-step-1 epkb-wc-step-panel--active">				<?php
 				EPKB_Utilities::kb_page_with_shortcode_missing_msg( $this->kb_config );
-				$link = esc_url( admin_url('edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) ) );				?>
+
+				$link = esc_url( admin_url( 'post-new.php?post_type=page' ) );				?>
+
 				<div class="epkb-center-wrap"><a href="<?php echo $link; ?>" target="_blank" class="epkb-add-shortcode-btn">Add Shortcode&nbsp;&nbsp;<i class="epkbfa epkbfa-exclamation-triangle"></i></a></div>
 			</div>  <?php
 			return;
@@ -307,7 +309,11 @@ class EPKB_KB_Wizard_Global {
 	}
 
 	//Wizard: Previous / Next Buttons / Apply Buttons
-	public function wizard_buttons() {      ?>
+	public function wizard_buttons() {
+
+	   if ( empty( $this->kb_config['kb_main_pages'] ) ) {
+	   	return;
+      }  ?>
 
 		<div class="epkb-wizard-button-container epkb-wizard-button-container--first-step">
 			<div class="epkb-wizard-button-container__inner">
@@ -320,12 +326,13 @@ class EPKB_KB_Wizard_Global {
 					<span class="epkb-wizard-button-next__icon epkbfa epkbfa-caret-right"></span>
 				</button>
 				<button value="apply" id="epkb-wizard-button-apply" class="epkb-wizard-button epkb-wizard-button-apply"  data-wizard-type="global"><?php _e( 'Apply', 'echo-knowledge-base' ); ?></button>
-				<a href="<?php echo esc_url( admin_url('edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&epkb-wizard-tab' ) ); ?>&page=epkb-kb-configuration" class="epkb-wizard-button epkb-wizard-button__exit" >
-					<?php _e( 'Exit', 'echo-knowledge-base' ); ?>
-				</a>
+
 				<input type="hidden" id="_wpnonce_apply_wizard_changes" name="_wpnonce_apply_wizard_changes" value="<?php echo wp_create_nonce( "_wpnonce_apply_wizard_changes" ); ?>">
 			</div>
 			<div class="epkb-wizard-link epkb-wizard-button-container__support-wizard">
+				<a href="<?php echo esc_url( admin_url('edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&epkb-wizard-tab' ) ); ?>&page=epkb-kb-configuration" class="epkb-wizard-button epkb-wizard-button__exit" >
+					<?php _e( 'Exit', 'echo-knowledge-base' ); ?>
+				</a>
 				<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank">
 					<?php _e( 'Support', 'echo-knowledge-base' ); ?>
 					<span class="epkbfa epkbfa-external-link"></span>

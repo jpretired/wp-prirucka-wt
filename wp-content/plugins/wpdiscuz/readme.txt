@@ -3,7 +3,7 @@ Contributors: gVectors Team
 Tags: comment, comments, ajax comments, comment form, comment fields
 Requires at least: 5.0
 Tested up to: 5.6
-Stable tag: 7.0.9
+Stable tag: 7.1.0
 Requires PHP: 5.4 and higher
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -179,10 +179,32 @@ Nothing will be lost!  **Comments - wpDiscuz** will show all old comments.
 
 == Changelog ==
 
+= Comments - wpDiscuz v7.1.0 =
+
+* Added: Live removing of moderated comments when the live update is enabled
+* Added: Display full date on moving mouse over comment dates
+* Added: Compatibility with new versions of jQuery lib
+* Added: Lots of new hooks for more flexibility and extendability of the plugin
+* Changed: Human readable counts and statistics
+* Fixed bug: Style comment custom fields on different themes
+* Fixed bug: Problems with lightbox functions
+* Fixed bug: Comment link icon issue on mobile devices
+* Fixed bug: Many small bugs has been fixed
+
+
+**IMPORTANT!**
+1. Please don't forget delete all caches and purge CDN after the update.
+2. If you're updating from 5.x.x versions please read this topic: [https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/](https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/)
+
+
+= Comments - wpDiscuz v7.0.10 =
+
+* Fixed bug: Phrases and translations issues
+
+
 = Comments - wpDiscuz v7.0.9 =
 
 * Core optimization
-
 
 
 = Comments - wpDiscuz v7.0.8 =
@@ -205,12 +227,6 @@ Nothing will be lost!  **Comments - wpDiscuz** will show all old comments.
 * Fixed bug: User mentioning notification issue if replies are posted in dashboard
 
 
-**IMPORTANT!**
-1. Please don't forget delete all caches and purge CDN after the update.
-2. If you're updating from 5.x.x versions please read this topic: [https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/](https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/)
-
-
-
 = Comments - wpDiscuz v7.0.7 =
 
 * Added: Important changes for WordPress 5.5 compatibility
@@ -231,10 +247,6 @@ Nothing will be lost!  **Comments - wpDiscuz** will show all old comments.
 
 
 = Comments - wpDiscuz v7.0.5 =
-
-**IMPORTANT!**
-Security vulnerability issue is fixed, please update!
-We have got a report that, there is a security vulnerability issue in 7.0.0 > 7.0.4 versions. This issue was fixed on 23rd July with the new update 7.0.5. We recommend keep using the latest versions and update wpDiscuz to 7.0.5 and higher versions.
 
 * Security vulnerability issue is fixed
 * Changed: New and better way to check allowed comment attachments
@@ -303,10 +315,6 @@ We have got a report that, there is a security vulnerability issue in 7.0.0 > 7.
 [https://wpdiscuz.com/community/news/security-vulnerability-issue-in-5-3-5-please-udate/](https://wpdiscuz.com/community/news/security-vulnerability-issue-in-5-3-5-please-udate/)
 
 = Comments - wpDiscuz v7.0.0 / v7.0.1 / v7.0.2 =
-
-**IMPORTANT!**
-This is a major version update!
-As you can see we jump from 5.3.5 version to 7.0.x, so you should understand, that lots of things are changed. This is a totally different wpDiscuz. Therefore, we recommend you follow these steps before updating to version 7:
 
 1. You'll lose old wpDiscuz template customization in the active WordPress theme /wpdiscuz/ folder. If you don't have customized wpDiscuz template files, just ignore this note.
 2. Please check [wpDiscuz v7 demo](https://wpdiscuz.com/) to make sure you want to update.

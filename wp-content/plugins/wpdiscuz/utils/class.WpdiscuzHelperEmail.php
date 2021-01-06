@@ -179,14 +179,14 @@ class WpdiscuzHelperEmail implements WpDiscuzConstants {
         if ($currentUser && $currentUser->user_email) {
             $email = $currentUser->user_email;
         }
-        if ($commentId && $email && $postId) {
-			if (apply_filters("wpdiscuz_enable_user_mentioning", $this->options->subscription["enableUserMentioning"]) && $this->options->subscription["sendMailToMentionedUsers"] && ($newComment = get_comment($commentId)) && ($mentionedUsers = $this->helper->getMentionedUsers($newComment->comment_content))) {
-				$this->sendMailToMentionedUsers($mentionedUsers, $newComment);
+        if ($commentId && $email && $postId && ($comment = get_comment($commentId))) {
+			if (apply_filters("wpdiscuz_enable_user_mentioning", $this->options->subscription["enableUserMentioning"]) && $this->options->subscription["sendMailToMentionedUsers"] && ($mentionedUsers = $this->helper->getMentionedUsers($comment->comment_content))) {
+				$this->sendMailToMentionedUsers($mentionedUsers, $comment);
 			}
+			do_action("wpdiscuz_before_sending_emails", $commentId, $comment);
             $this->notifyPostSubscribers($postId, $commentId, $email);
             $this->notifyFollowers($postId, $commentId, $email);
             if (!$isParent) {
-                $comment = get_comment($commentId);
                 $parentCommentId = $comment->comment_parent;
                 $parentComment = get_comment($parentCommentId);
                 $parentCommentEmail = $parentComment->comment_author_email;
@@ -282,6 +282,7 @@ class WpdiscuzHelperEmail implements WpDiscuzConstants {
 			if (apply_filters("wpdiscuz_enable_user_mentioning", $this->options->subscription["enableUserMentioning"]) && $this->options->subscription["sendMailToMentionedUsers"] && ($mentionedUsers = $this->helper->getMentionedUsers($comment->comment_content))) {
 				$this->sendMailToMentionedUsers($mentionedUsers, $comment);
 			}
+			do_action("wpdiscuz_before_sending_emails", $commentId, $comment);
             $this->notifyPostSubscribers($postId, $commentId, $email);
             if ($parentComment) {
                 $parentCommentEmail = $parentComment->comment_author_email;
@@ -444,18 +445,20 @@ class WpdiscuzHelperEmail implements WpDiscuzConstants {
         $fromName = html_entity_decode(get_option("blogname"), ENT_QUOTES);
         $headers[] = "Content-Type: text/html; charset=UTF-8";
         $headers[] = "From: " . $fromName . " <" . $fromEmail . "> \r\n";
-        $comment_link = get_comment_link($comment_data->comment_ID);
-        $post_title = get_the_title($comment_data->comment_post_ID);
         $subject = $this->options->phrases["wc_mentioned_email_subject"];
         $message = $this->options->phrases["wc_mentioned_email_message"];
         $search = ["[MENTIONED_USER_NAME]", "[POST_TITLE]", "[COMMENT_URL]", "[COMMENT_AUTHOR]"];
-        $replace = ["", $post_title, $comment_link, $comment_data->comment_author];
+        $replace = ["", get_the_title($comment_data->comment_post_ID), get_comment_link($comment_data->comment_ID), $comment_data->comment_author];
         foreach ($users as $k => $user) {
             if ($user["email"] !== $comment_data->comment_author_email) {
                 if (apply_filters("wpducm_mail_to_mentioned_user", true, $user, $comment_data)) {
                     $replace[0] = $user["name"];
                     $body = str_replace($search, $replace, $message);
-                    wp_mail($user["email"], $subject, $body, $headers);
+                    $subject = apply_filters("wpdiscuz_mentioned_user_mail_subject", $subject, $user, $comment_data);
+					$body = apply_filters("wpdiscuz_mentioned_user_mail_body", $body, $user, $comment_data);
+                    if ($subject && $body) {
+                    	wp_mail($user["email"], $subject, $body, $headers);
+					}
                 }
             }
         }

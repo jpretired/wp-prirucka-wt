@@ -134,6 +134,17 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         return $text;
     }
 
+    public function getNumber($number) {
+        if ($this->options->general["humanReadableNumbers"]) {
+            if (absint($number) >= 1000000) {
+				$number = sprintf(esc_html__("%sM", "wpdiscuz"), str_replace(".0", "", number_format($number / 1000000, 1)));
+			} else if (absint($number) >= 1000) {
+                $number = sprintf(esc_html__("%sK", "wpdiscuz"), str_replace(".0", "", number_format($number / 1000, 1)));
+            }
+        }
+        return $number;
+    }
+
     public function makeClickable($ret) {
         $ret = " " . $ret;
         $hook = "?";
@@ -998,10 +1009,10 @@ class WpdiscuzHelper implements WpDiscuzConstants {
                 ?>
                 <script>
                     jQuery(document).ready(function ($) {
-                        $('#wpd_reset_post_rating').click(function () {
+                        $(document).on('click', '#wpd_reset_post_rating', function () {
                             if (confirm('<?php _e("Are you sure you want to reset post rating?") ?>')) {
                                 var $this = $(this);
-                                $this.attr('disabled', true);
+                                $this.prop('disabled', true);
                                 $this.next('.wpd_reset_rating_working').show();
                                 $.ajax({
                                     url: wpdObject.ajaxUrl,
@@ -1037,10 +1048,10 @@ class WpdiscuzHelper implements WpDiscuzConstants {
                 ?>
                 <script>
                     jQuery(document).ready(function ($) {
-                        $('#wpd_reset_fields_ratings').click(function () {
+                        $(document).on('click', '#wpd_reset_fields_ratings', function () {
                             if (confirm('<?php _e("Are you sure you want to reset fields ratings?") ?>')) {
                                 var $this = $(this);
-                                $this.attr('disabled', true);
+                                $this.prop('disabled', true);
                                 $this.next('.wpd_reset_rating_working').show();
                                 $.ajax({
                                     url: wpdObject.ajaxUrl,

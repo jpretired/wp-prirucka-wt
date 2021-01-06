@@ -172,10 +172,10 @@ class EPKB_Manage_KB_Page {
 			<div class="epkb-manage-content__header"><?php
 				$manage_active = ( ( $this->active_kb_tab == $kb_id && $this->active_action_tab == 'manage' ) || ( $this->active_kb_tab != $kb_id ) ) ? 'active' : ''; ?>
 
-				<div class="epkb-manage-content__tab-button <?php echo $manage_active; ?>" data-target="#kb_<?php echo $kb_id; ?>_manage"><?php esc_html_e( 'Manage', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-manage-content__tab-button <?php echo $manage_active; ?>" data-target="#kb_<?php echo $kb_id; ?>_manage"><i class="epkbfa epkbfa-cubes"></i><?php esc_html_e( 'Manage', 'echo-knowledge-base' ); ?></div>
 
-				<div class="epkb-manage-content__tab-button <?php echo ( $this->active_kb_tab == $kb_id && $this->active_action_tab == 'export' ) ? 'active' : ''; ?>" data-target="#kb_<?php echo $kb_id; ?>_export"><?php esc_html_e( 'Export', 'echo-knowledge-base' ); ?></div>
-				<div class="epkb-manage-content__tab-button <?php echo ( $this->active_kb_tab == $kb_id && $this->active_action_tab == 'import' ) ? 'active' : ''; ?>" data-target="#kb_<?php echo $kb_id; ?>_import"><?php esc_html_e( 'Import', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-manage-content__tab-button <?php echo ( $this->active_kb_tab == $kb_id && $this->active_action_tab == 'export' ) ? 'active' : ''; ?>" data-target="#kb_<?php echo $kb_id; ?>_export"><i class="epkbfa epkbfa-cogs"></i><?php esc_html_e( 'Export', 'echo-knowledge-base' ); ?></div>
+				<div class="epkb-manage-content__tab-button <?php echo ( $this->active_kb_tab == $kb_id && $this->active_action_tab == 'import' ) ? 'active' : ''; ?>" data-target="#kb_<?php echo $kb_id; ?>_import"><i class="epkbfa epkbfa-cogs"></i><?php esc_html_e( 'Import', 'echo-knowledge-base' ); ?></div>
 
 				<?php do_action( 'eckb_manage_content_tab_header', $kb_id, $kb_config ); ?>
 			</div>

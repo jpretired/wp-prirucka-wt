@@ -20,10 +20,9 @@ class EPKB_Editor_View {
 
 			</div>
 			<div class="epkb-editor-popup__footer">
-				<button id="epkb-editor-popup__button-update"><?php _e( 'Update', 'echo-knowledge-base' ); ?>
-					<button id="epkb-editor-popup__button-cancel"><?php _e( 'Cancel', 'echo-knowledge-base' ); ?>
+				<button id="epkb-editor-popup__button-update"><?php _e( 'Update', 'echo-knowledge-base' ); ?></button>
+				<button id="epkb-editor-popup__button-cancel"><?php _e( 'Cancel', 'echo-knowledge-base' ); ?></button>
 			</div>
-
 		</div>
 
 		<div class="epkb-frontend-loader" style="display: none;">
@@ -31,8 +30,10 @@ class EPKB_Editor_View {
 		</div>		<?php
 	}
 
-	public static function get_editor_settings_html() {
-		ob_start(); ?>
+	public static function get_editor_settings_html( $kb_config ) {
+		ob_start();
+
+		$editor_urls = EPKB_Utilities::get_editor_urls( $kb_config );		?>
 
 		<div class="epkb-editor-settings-panel-container" id="epkb-editor-settings-templates">
 			<div class="epkb-editor-settings-accordeon-item__title"><?php _e( 'Choose Theme for KB', 'echo-knowledge-base' ); ?></div>
@@ -41,7 +42,7 @@ class EPKB_Editor_View {
 					<input type="radio" name="templates_for_kb" value="current_theme_templates">
 
 					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/Current-theme-option.jpg'; ?>">
+						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/current-theme-option.jpg'; ?>">
 						<span><?php _e( 'Current Theme', 'echo-knowledge-base' ); ?></span>
 					</div>
 				</label>
@@ -50,12 +51,24 @@ class EPKB_Editor_View {
 					<input type="radio" name="templates_for_kb" value="kb_templates">
 
 					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/KB-Template-option.jpg'; ?>">
+						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/kb-template-option.jpg'; ?>">
 						<span><?php _e( 'Knowledge Base Theme', 'echo-knowledge-base' ); ?></span>
 					</div>
 				</label>
 			</div>
-			<div class="epkb-editor-settings-accordeon-item__description"><?php _e( 'You can change the theme any time. Save to apply it.', 'echo-knowledge-base' ); ?></div>
+			<div class="epkb-editor-settings-accordeon-item__description">
+			 <?php _e( 'Choose theme that works best for you.', 'echo-knowledge-base' ); ?>
+
+				<div class="epkb-editor-settings__desc-links-container">
+					<p>The theme controls the style of these pages:</p>
+					<a href="<?php echo esc_url( $editor_urls['main_page_url'] ); ?>" target="_blank" class="epkb-editor-settings__desc-link"><?php _e( 'Main Page', 'echo-knowledge-base' ); ?></a>
+					<a href="<?php echo esc_url( $editor_urls['article_page_url'] ); ?>" target="_blank" class="epkb-editor-settings__desc-link"><?php _e( 'Article Page', 'echo-knowledge-base' ); ?></a>
+					<a href="<?php echo esc_url( $editor_urls['archive_url'] ); ?>" target="_blank" class="epkb-editor-settings__desc-link"><?php _e( 'Archive Page', 'echo-knowledge-base' ); ?></a>
+					<p>Switch theme, save it and reload each page to see the effect.</p>
+					<?php _e( 'You can change the theme at any time.', 'echo-knowledge-base' ); ?>
+				</div>
+
+			</div>
 
 			<a class="epkb-editor-settings-accordeon-item__learn-more" href="https://www.echoknowledgebase.com/documentation/current-theme-vs-kb-theme/" target="_blank"><?php _e( 'Learn More', 'echo-knowledge-base' ); ?></a>
 		</div>
@@ -67,7 +80,7 @@ class EPKB_Editor_View {
 					<input type="radio" name="kb_main_page_layout" value="Basic">
 
 					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/basic.jpg'; ?>">
+						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/basic-layout-dark.jpg'; ?>">
 						<span><?php _e( 'Basic', 'echo-knowledge-base' ); ?></span>
 					</div>
 				</label>
@@ -76,7 +89,7 @@ class EPKB_Editor_View {
 					<input type="radio" name="kb_main_page_layout" value="Tabs">
 
 					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/tabs.jpg'; ?>">
+						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/tabs-layout.jpg'; ?>">
 						<span><?php _e( 'Tabs', 'echo-knowledge-base' ); ?></span>
 					</div>
 				</label>
@@ -85,7 +98,7 @@ class EPKB_Editor_View {
 					<input type="radio" name="kb_main_page_layout" value="Categories">
 
 					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/category-focused.jpg'; ?>">
+						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/category-focused-layout.jpg'; ?>">
 						<span><?php _e( 'Category Focused', 'echo-knowledge-base' ); ?></span>
 					</div>
 				</label><?php
@@ -96,29 +109,31 @@ class EPKB_Editor_View {
 						<input type="radio" name="kb_main_page_layout" value="Grid">
 
 						<div class="epkb-editor-settings-control-image-select--label">
-							<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/grid.jpg'; ?>">
+							<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/grid-layout.jpg'; ?>">
 							<span><?php _e( 'Grid', 'echo-knowledge-base' ); ?></span>
 						</div>
 					</label>
 
 					<label class="epkb-editor-settings-control-image-select" data-name="kb_main_page_layout">
-					<input type="radio" name="kb_main_page_layout" value="Sidebar">
+						<input type="radio" name="kb_main_page_layout" value="Sidebar">
 
-					<div class="epkb-editor-settings-control-image-select--label">
-						<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/sidebar.jpg'; ?>">
-						<span><?php _e( 'Sidebar', 'echo-knowledge-base' ); ?></span>
-					</div>
+						<div class="epkb-editor-settings-control-image-select--label">
+							<img src="<?php echo Echo_Knowledge_Base::$plugin_url.'img/editor/sidebar-layout.jpg'; ?>">
+							<span><?php _e( 'Sidebar', 'echo-knowledge-base' ); ?></span>
+						</div>
 					</label><?php
 
-				} ?>
+				}  ?>
 
 			</div>
 		</div> <?php
-
+		
+		do_action( 'epkb_editor_settings_html' );
+		
 		return ob_get_clean();
 	}
 
-	public static function get_editor_madal_menu_lnks( $page_type, $kb_config ) {
+	public static function get_editor_modal_menu_links( $page_type, $kb_config ) {
 
 		$editor_urls = EPKB_Utilities::get_editor_urls( $kb_config );
 

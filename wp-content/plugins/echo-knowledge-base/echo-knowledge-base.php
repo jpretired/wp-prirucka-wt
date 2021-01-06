@@ -3,7 +3,7 @@
  * Plugin Name: Knowledge Base for Documents and FAQs
  * Plugin URI: https://www.echoknowledgebase.com
  * Description: Echo Knowledge Base is super easy to configure, works well with themes and can handle a variety of article hierarchies.
- * Version: 7.0.2
+ * Version: 7.0.3
  * Author: Echo Plugins
  * Author URI: https://www.echoknowledgebase.com
  * Text Domain: echo-knowledge-base
@@ -43,7 +43,7 @@ final class Echo_Knowledge_Base {
 	/* @var Echo_Knowledge_Base */
 	private static $instance;
 
-	public static $version = '7.0.2';
+	public static $version = '7.0.3';
 	public static $plugin_dir;
 	public static $plugin_url;
 	public static $plugin_file = __FILE__;
@@ -101,7 +101,11 @@ final class Echo_Knowledge_Base {
 		self::$instance->settings_obj = new EPKB_Settings_DB();
 		self::$instance->kb_config_obj = new EPKB_KB_Config_DB();
 		
-		// TODO new EPKB_Error_Handler();
+		//Enable error handler if script_debug is on
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			new EPKB_Error_Handler();
+		}
+
 		new EPKB_Upgrades();
 
 		// setup custom core features
@@ -276,7 +280,7 @@ final class Echo_Knowledge_Base {
 				add_action( 'admin_enqueue_scripts', 'epkb_load_admin_plugin_pages_resources' );
 			}
 		}
-		
+
 		// on Category page show category icon selection feature
 		if ( $is_kb_request && ( $pagenow == 'term.php' || $pagenow == 'edit-tags.php' ) ) {
 			new EPKB_KB_Config_Category();

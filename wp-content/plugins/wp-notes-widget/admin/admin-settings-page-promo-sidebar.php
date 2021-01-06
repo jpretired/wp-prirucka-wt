@@ -16,9 +16,9 @@
               
               <!-- Nav tabs -->
               <ul id="wp-notes-widget__settings-tab-list" class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#general" aria-controls="home" role="tab" data-toggle="tab"><?php esc_html_e('General','wp-notes-widget'); ?></a></li>
-                <li role="presentation" class=""><a href="#shortcode" aria-controls="shortcode" role="tab" data-toggle="tab"><?php esc_html_e('Shortcode','wp-notes-widget'); ?></a></li>
-                <li role="presentation"><a href="#twitter" aria-controls="profile" role="tab" data-toggle="tab"><?php esc_html_e('Twitter','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="active nav-link" href="#general" aria-controls="home" role="tab" data-toggle="tab"><?php esc_html_e('General','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link" href="#shortcode" aria-controls="shortcode" role="tab" data-toggle="tab"><?php esc_html_e('Shortcode','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link" href="#twitter" aria-controls="profile" role="tab" data-toggle="tab"><?php esc_html_e('Twitter','wp-notes-widget'); ?></a></li>
               </ul>
 
               <!-- Tab panes -->

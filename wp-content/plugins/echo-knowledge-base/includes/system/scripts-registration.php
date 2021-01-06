@@ -21,7 +21,7 @@ function epkb_load_public_resources() {
 		epkb_load_front_end_editor( $eckb_kb_id );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'epkb_load_public_resources' );
+add_action( 'wp_enqueue_scripts', 'epkb_load_public_resources', 500 );
 
 /**
  * Register for FRONT-END pages using our plugin features
@@ -33,6 +33,9 @@ function epkb_register_public_resources() {
 	wp_register_style( 'epkb-public-styles', Echo_Knowledge_Base::$plugin_url . 'css/public-styles' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-public-scripts', Echo_Knowledge_Base::$plugin_url . 'js/public-scripts' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 	wp_register_script( 'epkb-materialize', Echo_Knowledge_Base::$plugin_url . 'js/vendor/materialize' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
+
+	wp_register_style( 'epkb-icon-fonts', Echo_Knowledge_Base::$plugin_url . 'css/epkb-icon-fonts' . $suffix . '.css', array(), Echo_Knowledge_Base::$version );
+
 	wp_localize_script( 'epkb-public-scripts', 'epkb_vars', array(
 		'msg_try_again'         => esc_html__( 'Please try again later.', 'echo-knowledge-base' ),
 		'error_occurred'        => esc_html__( 'Error occurred', 'echo-knowledge-base' ) . ' (16)',
@@ -55,6 +58,15 @@ function epkb_enqueue_public_resources() {
 	wp_enqueue_script( 'epkb-materialize' );  // scrollSpy for TOC
 }
 add_action( 'epkb_enqueue_scripts', 'epkb_enqueue_public_resources' ); // use this action in any place to add scripts $kb_id as a parameter
+
+/**
+ * Queue for FRONT-END pages using our plugin features
+ */
+function epkb_enqueue_font() {
+	wp_enqueue_style( 'epkb-icon-fonts' );
+}
+add_action( 'epkb_enqueue_font_scripts', 'epkb_enqueue_font' ); // use this action in any place to add scripts $kb_id as a parameter
+
 
 /**
  * BACK-END: KB Config page needs front-page CSS resources
@@ -451,29 +463,24 @@ function epkb_load_front_end_editor( $kb_id ) {
 	if ( ! isset( $wp_scripts->registered['iris'] ) ) {
 		wp_register_script( 'iris', admin_url('js/iris.min.js'), array('jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), '1.0.7', true );
 	}
-
+	
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	
 	// styles
-	wp_register_style( 'wp-color-picker', admin_url( 'css/color-picker.css'), array(), '', true );
-	wp_deregister_script( 'wp-color-picker' );
-	// scripts
-	if ( isset( $wp_scripts->registered['wp-i18n'] ) ) {
-		wp_register_script( 'wp-color-picker', admin_url('js/color-picker.js'), array('iris', 'wp-i18n'), null, true );
-	} else {
-		wp_register_script( 'wp-color-picker', admin_url('js/color-picker.js'), array('iris'), null, true );
-	}
+	wp_register_script( 'epkb-color-picker', Echo_Knowledge_Base::$plugin_url . 'js/vendor/color-picker' . $suffix . '.js', array('iris'), null, true );
 	
 	// enqueue
-	wp_enqueue_style('wp-color-picker');
+	//wp_enqueue_style('wp-color-picker');
 	wp_enqueue_style( 'epkb-editor', Echo_Knowledge_Base::$plugin_url . 'css/editor.css', array(), Echo_Knowledge_Base::$version );
 
-	wp_enqueue_script( 'epkb-editor', Echo_Knowledge_Base::$plugin_url . 'js/editor.js', array('jquery'), Echo_Knowledge_Base::$version );
+	wp_enqueue_script( 'epkb-editor', Echo_Knowledge_Base::$plugin_url . 'js/editor' . $suffix . '.js', array('jquery'), Echo_Knowledge_Base::$version );
 
 	wp_localize_script( 'epkb-editor', 'epkb_editor_config', $config_settings );
 	wp_localize_script( 'epkb-editor', 'epkb_editor_settings', $editor_settings );
-
-	wp_localize_script( 'epkb-editor', 'epkb_editor', array(
+	
+	$epkb_editor = array(
 		'_wpnonce_apply_editor_changes' => wp_create_nonce( '_wpnonce_apply_editor_changes' ),
-		'ajaxurl' =>        admin_url( 'admin-ajax.php' ),
+		'ajaxurl' =>        admin_url( 'admin-ajax.php', 'relative' ),
 		'kb_url' =>        admin_url( 'edit.php?post_type=' . EPKB_KB_Handler::KB_POST_TYPE_PREFIX . $kb_id ),
 		'epkb_editor_kb_id' => $kb_id,
 		'page_type' => $page_type,
@@ -490,7 +497,7 @@ function epkb_load_front_end_editor( $kb_id ) {
 		'tab_hidden'      => __( 'Deactivated Items', 'echo-knowledge-base' ),
 		'save_button'       => __( 'Save', 'echo-knowledge-base' ),
 		'exit_button'       => __( 'Exit Editor', 'echo-knowledge-base' ),
-		'clear_modal_notice' => __( 'Click within any Knowledge Base page element to change its settings', 'echo-knowledge-base' ),
+		'clear_modal_notice' => __( 'Click on any page element to change its settings', 'echo-knowledge-base' ),
 		'no_settings'     => __( 'This zone have no settings yet', 'echo-knowledge-base' ),
 		'checkbox_on'    => __( 'Yes', 'echo-knowledge-base' ),
 		'checkbox_off'    => __( 'No', 'echo-knowledge-base' ),
@@ -499,23 +506,29 @@ function epkb_load_front_end_editor( $kb_id ) {
 		'right_panel' => __( 'Right Panel', 'echo-knowledge-base' ),
 		'edit_button' => __( 'Edit', 'echo-knowledge-base' ),
 		'preopen' => empty ( $_REQUEST['preopen'] ) ? '' : $_REQUEST['preopen'],
-		'settings_html' => EPKB_Editor_View::get_editor_settings_html(),
-		'menu_links_html' => EPKB_Editor_View::get_editor_madal_menu_lnks( $page_type, $kb_config ),
-	) );
+		'settings_html' => EPKB_Editor_View::get_editor_settings_html( $kb_config ),
+		'menu_links_html' => EPKB_Editor_View::get_editor_modal_menu_links( $page_type, $kb_config ),
+		'urls_and_slug' => __( 'URLs and Slug', 'echo-knowledge-base' ),
+		'order_categories_and_articles' => __( 'Order Categories and Articles', 'echo-knowledge-base' ),
+		'rename_kb' => __( 'Rename KB Name and Title', 'echo-knowledge-base' ),
+		'theme_link' => __( 'Theme', 'echo-knowledge-base' ),
+		'layouts_link' => __( 'Layouts', 'echo-knowledge-base' ),
+		'color_value' => __( 'Color value', 'echo-knowledge-base' ),
+		'select_color' => __( 'Select Color', 'echo-knowledge-base' ),
+		'default' => __( 'Default', 'echo-knowledge-base' ),
+		'select_default_color' => __( 'Select default color', 'echo-knowledge-base' ),
+		'clear' => __( 'Clear', 'echo-knowledge-base' ),
+		'clear_color' => __( 'Clear color', 'echo-knowledge-base' ),
+	);
+	
+	$epkb_editor = apply_filters( 'epkb_editor_localize', $epkb_editor );
+	wp_localize_script( 'epkb-editor', 'epkb_editor', $epkb_editor );
+	
+	$epkb_editor_addon_data = apply_filters( 'epkb_editor_addon_data', array(), $kb_config );
+	wp_localize_script( 'epkb-editor', 'epkb_editor_addon_data', $epkb_editor_addon_data );
 
-	// used by WordPress color picker  ( wpColorPicker() ) before 5.5.0
-	wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n',
-		array(
-			'clear'            =>   __( 'Reset', 'echo-knowledge-base' ),
-			'clearAriaLabel'   =>   __( 'Reset color', 'echo-knowledge-base' ),
-			'defaultString'    =>   __( 'Default', 'echo-knowledge-base' ),
-			'defaultAriaLabel' =>   __( 'Select default color', 'echo-knowledge-base' ),
-			'pick'             =>   '',
-			'defaultLabel'     =>   __( 'Color value', 'echo-knowledge-base' ),
-		));
-		
 	wp_enqueue_script( 'jquery-ui-slider' );
-	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_script( 'epkb-color-picker' );
 	
 	// add Frontend Editor button to the admin panel
 	add_action( 'admin_bar_menu', 'epkb_add_admin_bar_button', 1000 );

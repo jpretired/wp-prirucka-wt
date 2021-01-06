@@ -339,27 +339,38 @@ class EPKB_Export_Import {
 
 	private function upgrade_plugin_data( $add_on_prefix, &$plugin_config ) {
 
-		$data_version = empty($plugin_config['plugin_version']) ? '' : $plugin_config['plugin_version'];
-		$last_version = empty($data_version)
-							? ( $add_on_prefix == 'epkb' ? '6.9.9' : ( $add_on_prefix == 'asea' ? '2.13.9' : '' ) )
-							: $data_version;
-
-		// is data upgrade available?
-		if ( empty($last_version) || $last_version == $data_version ) {
-			return;
-		}
+		$import_plugin_version = empty($plugin_config['plugin_version']) ? '' : $plugin_config['plugin_version'];
 
 		switch ( $add_on_prefix ) {
 
 			case 'epkb':
+				$last_version = empty($import_plugin_version) ? '6.9.9' : $import_plugin_version;
+				if ( $last_version != Echo_Knowledge_Base::$version ) {
 					EPKB_Upgrades::run_upgrade( $plugin_config, $last_version );
+				}
 				break;
 
 			case 'asea':
-				if ( class_exists('ASEA_Upgrades') && is_callable(array('ASEA_Upgrades', 'run_upgrade')) ) {
+				$last_version = empty($import_plugin_version) ? '2.13.9' : $import_plugin_version;
+				if ( class_exists('Echo_Advanced_Search') && $last_version != Echo_Advanced_Search::$version && class_exists('ASEA_Upgrades') && is_callable(array('ASEA_Upgrades', 'run_upgrade')) ) {
 					ASEA_Upgrades::run_upgrade( $plugin_config, $last_version );
 				}
 				break;
+
+			case 'elay':
+				$last_version = empty($import_plugin_version) ? '2.5.4' : $import_plugin_version;
+				if ( class_exists('Echo_Elegant_Layouts') && $last_version != Echo_Elegant_Layouts::$version && class_exists('ELAY_Upgrades') && is_callable(array('ELAY_Upgrades', 'run_upgrade')) ) {
+					ELAY_Upgrades::run_upgrade( $plugin_config, $last_version );
+				}
+				break;
+
+			case 'eprf':
+				$last_version = empty($import_plugin_version) ? '1.4.0' : $import_plugin_version;
+				if ( class_exists('Echo_Article_Rating_And_Feedback') && $last_version != Echo_Article_Rating_And_Feedback::$version && class_exists('EPRF_Upgrades') && is_callable(array('EPRF_Upgrades', 'run_upgrade')) ) {
+					EPRF_Upgrades::run_upgrade( $plugin_config, $last_version );
+				}
+				break;
+
 		}
 	}
 

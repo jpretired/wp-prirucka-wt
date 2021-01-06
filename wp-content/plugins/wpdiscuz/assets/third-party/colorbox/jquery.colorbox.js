@@ -566,7 +566,7 @@
 					}
 				});
 
-				if ($.isFunction($.fn.on)) {
+				if (typeof $.fn.on === 'function') {
 					// For jQuery 1.7+
 					$(document).on('click.'+prefix, '.'+boxElement, clickHandler);
 				} else {

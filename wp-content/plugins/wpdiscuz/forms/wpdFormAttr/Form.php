@@ -855,7 +855,7 @@ class Form {
             }
             ?>
             <div class="wpd-textarea-wrap">
-                <textarea id="wc-textarea-<?php echo esc_attr($uniqueId); ?>" placeholder="<?php echo esc_attr($textarea_placeholder); ?>" required name="wc_comment" class="wc_comment wpd-field"></textarea>
+                <textarea id="wc-textarea-<?php echo esc_attr($uniqueId); ?>" placeholder="<?php echo esc_attr($textarea_placeholder); ?>" aria-label="<?php echo esc_attr($textarea_placeholder); ?>" required name="wc_comment" class="wc_comment wpd-field"></textarea>
             </div>
             <?php
             echo apply_filters("wpdiscuz_editor_buttons_html", "", $uniqueId);

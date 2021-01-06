@@ -5651,6 +5651,11 @@ stretch - fills the whole height of the cell (this is the default)
         font-size: 90px;
         padding-bottom: 20px;
         color: #ffd400; }
+      .epkb-wizards .epkb-wizard-box-container_1 .epkb-wizard-box__header .epkb-wizard-box__header__img {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 20px; }
       .epkb-wizards .epkb-wizard-box-container_1 .epkb-wizard-box__header .epkb-wizard-box__header__title {
         display: block;
         width: 100%;
@@ -5658,7 +5663,7 @@ stretch - fills the whole height of the cell (this is the default)
         font-weight: bold;
         font-size: 22px;
         margin: 0;
-        padding: 0; }
+        padding: 20px 0; }
     .epkb-wizards .epkb-wizard-box-container_1 .epkb-wizard-box__body {
       width: 70%;
       float: left;
@@ -6200,7 +6205,8 @@ stretch - fills the whole height of the cell (this is the default)
           border: solid 2px #658653; }
         #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container .epkb-wizard-button-container__support-wizard {
           position: absolute;
-          top: 51px;
+          top: 50%;
+          transform: translateY(-50%);
           right: 37px;
           font-size: 20px; }
       #epkb-config-wizard-content .epkb-config-wizard-inner .epkb-wizard-footer .epkb-wizard-button-container--first-step #epkb-wizard-button-prev {
@@ -6828,7 +6834,7 @@ stretch - fills the whole height of the cell (this is the default)
         #epkb-config-wizard-content .epkb-wizard-global-selection-container .eckb-wizard-search-content .eckb-wizard-option-heading h4.epkb-wizard-header-alert-icon:before,
         #epkb-config-wizard-content .epkb-wizard-global-selection-container .eckb-wizard-features-content .eckb-wizard-option-heading h4.epkb-wizard-header-alert-icon:before,
         #epkb-config-wizard-content .epkb-wizard-global-selection-container .eckb-wizard-global-content .eckb-wizard-option-heading h4.epkb-wizard-header-alert-icon:before {
-          content: "";
+          content: "∩ä¬";
           display: inline-block;
           font: normal normal normal 14px/1 FontAwesome;
           font-size: inherit;
@@ -8858,7 +8864,11 @@ stretch - fills the whole height of the cell (this is the default)
   line-height: 20px; }
 .eckb-wizard-ordering .epkb-wizard-button__exit {
   border-color: #d9534f !important;
-  background-color: #d9534f !important; }
+  background-color: #d9534f !important;
+  color: #fff !important;
+  margin: 0 20px;
+  min-width: 50px;
+  display: inline-block; }
 
 /** Global Wizard **/
 .eckb-wizard-global-page .epkb-wizard-button-container {
@@ -8875,7 +8885,11 @@ stretch - fills the whole height of the cell (this is the default)
   line-height: 20px; }
 .eckb-wizard-global-page .epkb-wizard-button__exit {
   border-color: #d9534f !important;
-  background-color: #d9534f !important; }
+  background-color: #d9534f !important;
+  color: #fff !important;
+  margin: 0 20px;
+  min-width: 50px;
+  display: inline-block; }
 
 #ekb-admin-page-wrap.epkb-analytics-container #epkb-config-main-info .epkb-active-nav {
   color: #00a0d2;
@@ -9271,23 +9285,30 @@ stretch - fills the whole height of the cell (this is the default)
       .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content.active {
         display: block; }
       .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__header {
-        border-bottom: 1px solid #333333;
         display: flex; }
       .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button {
         cursor: pointer;
         padding: 15px 60px;
         transition: 0.1s;
-        margin-bottom: -1px;
-        background: #333333;
-        color: #fff;
+        margin-right: 10px;
+        background: #e8e8e8;
+        color: #000;
         font-size: 16px;
-        border-left: solid 1px #6e6c6c; }
+        border-radius: 4px 4px 0 0;
+        font-weight: 600; }
+        .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button i {
+          color: #2EA3F2;
+          padding-right: 10px;
+          opacity: 0.6; }
         .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button:hover {
           color: #2EA3F2; }
+          .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button:hover i {
+            opacity: 1; }
         .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button.active {
           background-color: #faf7f7;
-          box-shadow: inset 0 15px 0px -10px #2EA3F2;
           color: #2EA3F2; }
+          .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button.active i {
+            opacity: 1; }
         .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab-button:first-child {
           border: none; }
       .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-content .epkb-manage-content__tab {
@@ -9369,7 +9390,7 @@ stretch - fills the whole height of the cell (this is the default)
           box-shadow: inset 16px 0 0px -10px #2EA3F2;
           padding-left: 16px;
           color: #2EA3F2;
-          background-color: #faf7f7;
+          background-color: #fff;
           z-index: 999;
           position: relative; }
           .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-tabs__buttons .epkb-manage-tabs__button.active .epkb-manage-tabs__button__title {
@@ -9380,8 +9401,7 @@ stretch - fills the whole height of the cell (this is the default)
         border-top: none; }
     .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-tabs__content {
       width: calc( 100% - 300px );
-      box-sizing: border-box;
-      background-color: #333333; }
+      box-sizing: border-box; }
       @media only screen and (max-width: 1400px) {
         .epkb-manage-kb-container .epkb-manage-tabs-container .epkb-manage-tabs__content {
           width: calc( 100% - 200px ); } }
@@ -11505,9 +11525,9 @@ stretch - fills the whole height of the cell (this is the default)
 
 .epkb-add-shortcode-btn {
   border-radius: 3px;
-  background-image: -moz-linear-gradient(-169deg, #d95651, #b84a30);
-  background-image: -webkit-linear-gradient(-169deg, #d95651, #b84a30);
-  background-image: -ms-linear-gradient(-169deg, #d95651, #b84a30);
+  background-image: -moz-linear-gradient(-169deg, #2EA3F2, #106ECD);
+  background-image: -webkit-linear-gradient(-169deg, #2EA3F2, #106ECD);
+  background-image: -ms-linear-gradient(-169deg, #2EA3F2, #106ECD);
   background-color: #2EA3F2;
   color: #fff;
   padding: 6px 20px;

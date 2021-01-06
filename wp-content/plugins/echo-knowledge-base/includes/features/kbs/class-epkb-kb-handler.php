@@ -942,34 +942,58 @@ class EPKB_KB_Handler {
 			}
 
 			$data = array_keys($articles_seq_data[$cat_seq_id]);
-			if ( empty($data[2]) ) {
-				continue;
+
+			for( $i=2; $i < count($data); $i++ ) {
+
+				if ( empty($data[$i]) ) {
+					continue;
+				}
+
+				$article_id = $data[$i];
+				if ( ! EPKB_Utilities::is_link_editor_enabled() ) {
+					return get_permalink( $article_id );
+				}
+
+				$post = get_post( $article_id );
+
+				if ( empty( $post ) ) {
+					continue;
+				}
+
+				// check if KB Article is linked
+				if ( EPKB_Utilities::is_link_editor( $post ) ) {
+					continue;
+				}
+				
+				return get_permalink( $article_id );
 			}
 
-			return get_permalink( $data[2] );
 		}
 
 		return '';
 	}
 
 	/**
-	 * Find first category url.
+	 * Find category with most articles
 	 *
 	 * @param $kb_config
 	 * @return string|<empty>
 	 */
-	public static function get_first_kb_category_url( $kb_config ) {
+	public static function get_kb_category_with_most_articles_url( $kb_config ) {
 
-		$custom_categories_data = EPKB_Utilities::get_kb_option( $kb_config['id'], EPKB_Categories_Admin::KB_CATEGORIES_SEQ_META, null, true );
-		if ( empty($custom_categories_data) ) {
+		$articles_seq_data = EPKB_Utilities::get_kb_option( $kb_config['id'], EPKB_Articles_Admin::KB_ARTICLES_SEQ_META, array(), true );
+		if ( empty($articles_seq_data) ) {
 			return '';
 		}
 
-		$category_seq_array = EPKB_Articles_Setup::epkb_get_array_keys_multiarray( $custom_categories_data, $kb_config );
-		if ( empty($category_seq_array[0]) ) {
+		$articles_seq_data_length = array_map('sizeof', $articles_seq_data);
+		arsort($articles_seq_data_length);
+		$category_id = key($articles_seq_data_length); // the top is the category with most articles
+
+		if ( empty($category_id) ) {
 			return '';
 		}
 
-		return get_category_link( $category_seq_array[0] );
+		return get_category_link( $category_id );
 	}
 }

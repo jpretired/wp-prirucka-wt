@@ -2,8 +2,8 @@
 Contributors: stevepuddick
 Tags: widget, notes, sidebar, notification, news, events, tweet, twitter
 Requires at least: 3.5
-Tested up to: 5.3.2
-Stable tag: 1.0.5
+Tested up to: 5.6
+Stable tag: 1.0.6
 License: GPLv2 or later
 
 Display important, short, time sensitive text and media in a 'sticky note' style. Auto Tweet your notes.

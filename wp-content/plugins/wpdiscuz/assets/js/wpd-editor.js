@@ -45,11 +45,6 @@ class wpdEditorCounter {
         } else if (this.container) {
             this.container.remove();
         }
-//        if (_length < this.minCount) {
-//            this.submit.disabled = true;
-//        } else {
-//            this.submit.disabled = false;
-//        }
     }
 }
 
@@ -78,6 +73,7 @@ class wpdEditorLink extends Link {
 
 }
 Quill.register(wpdEditorLink, true);
+
 class WpdEditor {
     constructor() {
         this.editorWraperPrefix = 'wpd-editor-wraper';
@@ -150,6 +146,16 @@ class WpdEditor {
                     return new Delta([{insert: node.innerHTML}]);
                 } else {
                     return delta;
+                }
+            });
+            
+            editor.clipboard.addMatcher('img', (node, delta) => {
+                let Delta = Quill.import('delta');
+                let src  = node.getAttribute("src");
+                if (/^data:image\/.+;base64/.test(src)) {
+                    return new Delta([{insert: ''}]);
+                } else {
+                   return new Delta([{insert: src}]);
                 }
             });
             document.querySelectorAll(`${toolbar} button`).forEach(

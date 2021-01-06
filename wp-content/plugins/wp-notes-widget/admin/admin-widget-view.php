@@ -146,7 +146,7 @@
               </li>
               <?php
             }
-            wp_reset_postdata();
+            wp_reset_postdata(); wp_reset_query();
           ?>
         </ul>
 

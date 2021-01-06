@@ -391,12 +391,14 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
                             $response["code"] = "wc_follow_canceled";
                             $this->dbManager->cancelFollow($followExists["id"], $followExists["activation_key"]);
                             $response["followTip"] = esc_attr($this->options->phrases["wc_follow_user"]);
+							do_action("wpdiscuz_follow_cancelled", $args);
                         } else { // follow exists but not confirmed yet, send confirm email again if neccessary
                             if ($this->options->subscription["disableFollowConfirmForUsers"]) {
                                 $this->dbManager->confirmFollow($followExists["id"], $followExists["activation_key"]);
                                 $response["code"] = "wc_follow_success";
                                 $response["followClass"] = "wpd-follow-active";
                                 $response["followTip"] = esc_attr($this->options->phrases["wc_unfollow_user"]);
+								do_action("wpdiscuz_follow_added", $args);
                             } else {
                                 $this->followConfirmAction($comment->comment_post_ID, $followExists["id"], $followExists["activation_key"], $args["follower_email"]);
                             }
@@ -410,6 +412,7 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
                                 $response["code"] = "wc_follow_success";
                                 $response["followClass"] = "wpd-follow-active";
                                 $response["followTip"] = esc_attr($this->options->phrases["wc_unfollow_user"]);
+                                do_action("wpdiscuz_follow_added", $args);
                                 wp_send_json_success($response);
                             } else {
                                 $this->followConfirmAction($comment->comment_post_ID, $followData["id"], $followData["activation_key"], $args["follower_email"]);
@@ -595,6 +598,7 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
         $commentId = isset($_POST["commentId"]) ? intval($_POST["commentId"]) : 0;
         if ($commentId) {
             $comment = get_comment($commentId);
+			$form = $this->wpdiscuzForm->getForm($comment->comment_post_ID);
             $commentContent = $this->helper->filterCommentText($comment->comment_content);
             if ($this->options->content["enableImageConversion"]) {
                 $commentContent = $this->helper->makeClickable($commentContent);
@@ -606,7 +610,6 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
                 $feedbackForm = $this->dbManager->getFeedbackForm($inlineFormID);
                 $inlineContent = "<div class='wpd-inline-feedback-wrapper'><span class='wpd-inline-feedback-info'>" . esc_html($this->options->phrases["wc_feedback_content_text"]) . "</span> <i class=\"fas fa-quote-left\"></i>" . wp_trim_words($feedbackForm->content, apply_filters("wpdiscuz_feedback_content_words_count", 20)) . "&quot;  <a class='wpd-feedback-content-link' data-feedback-content-id='{$feedbackForm->id}' href='#wpd-inline-{$feedbackForm->id}'>" . esc_html($this->options->phrases["wc_read_more"]) . "</a></div>";
             }
-            $form = $this->wpdiscuzForm->getForm($comment->comment_post_ID);
             $components = $this->helper->getComponents($form->getTheme(), $form->getLayout());
             $response = [
                 "message" => str_replace(["{TEXT_WRAPPER_CLASSES}", "{TEXT}"], ["wpd-comment-text", $inlineContent . $commentContent], $components["text.html"]),
@@ -690,10 +693,13 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
                     if ($this->options->thread_layouts["votingButtonsStyle"]) {
                         $response["buttonsStyle"] = "separate";
                         $response["likeCount"] = esc_html($votesSeparate["like"]);
+                        $response["likeCountHumanReadable"] = esc_html($this->helper->getNumber($votesSeparate["like"]));
                         $response["dislikeCount"] = esc_html(-$votesSeparate["dislike"]);
+                        $response["dislikeCountHumanReadable"] = esc_html($this->helper->getNumber(-$votesSeparate["dislike"]));
                     } else {
                         $response["buttonsStyle"] = "total";
                         $response["votes"] = esc_html($voteCount);
+                        $response["votesHumanReadable"] = esc_html($this->helper->getNumber($voteCount));
                     }
                     $response["curUserReaction"] = $vote;
                 } else {
@@ -715,10 +721,13 @@ class WpdiscuzHelperAjax implements WpDiscuzConstants {
                 if ($this->options->thread_layouts["votingButtonsStyle"]) {
                     $response["buttonsStyle"] = "separate";
                     $response["likeCount"] = esc_html($votesSeparate["like"]);
+					$response["likeCountHumanReadable"] = esc_html($this->helper->getNumber($votesSeparate["like"]));
                     $response["dislikeCount"] = esc_html(-$votesSeparate["dislike"]);
+					$response["dislikeCountHumanReadable"] = esc_html($this->helper->getNumber(-$votesSeparate["dislike"]));
                 } else {
                     $response["buttonsStyle"] = "total";
                     $response["votes"] = esc_html($voteCount);
+					$response["votesHumanReadable"] = esc_html($this->helper->getNumber($voteCount));
                 }
                 $response["curUserReaction"] = $voteType;
             }

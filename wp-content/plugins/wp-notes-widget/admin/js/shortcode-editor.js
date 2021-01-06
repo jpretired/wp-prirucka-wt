@@ -206,7 +206,7 @@ jQuery(function($) {
 	jQuery('#insert-wp-notes-widget-shortcode').on('click', function(){
 		jQuery('#wp-notes-widget__shortcode-editor-modal').modal('show');
 	});
-	
+
 	jQuery('#wp-notes-widget--insert-shortcode').on('click', function(){
 		wp.media.editor.insert('[wp-notes-widget ' + stripHTML(shortcode_string) + ' ]');
 		jQuery('#wp-notes-widget__shortcode-editor-modal').modal('hide');
@@ -219,12 +219,14 @@ jQuery(function($) {
 	});
 
 	$("#wp-notes-widget__shortcode-editor-modal").on('shown.bs.modal', function () {
-    initShortcodeModalScrollDisplay(); 	  
-  });	
+    	initShortcodeModalScrollDisplay();
+	});
+
 	$("#wp-notes-widget__shortcode-editor-modal a[data-toggle='tab']").on('shown.bs.tab', function () {
-    initShortcodeModalScrollDisplay(); 	  
-  });
+		initShortcodeModalScrollDisplay();
+	});
 
 	initShortcodeSettingsChangeListeners();
 	initScrollListeners();
+
 });

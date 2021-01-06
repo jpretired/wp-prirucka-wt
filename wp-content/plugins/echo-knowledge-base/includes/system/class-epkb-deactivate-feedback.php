@@ -87,17 +87,21 @@ class EPKB_Deactivate_Feedback {
 		$reason_type = empty($_POST['reason_key']) ? 'N/A' : $_POST['reason_key'];
 		$reason_input = empty($_POST[ "reason_{$reason_type}" ]) ? 'N/A' : sanitize_text_field( $_POST[ "reason_{$reason_type}" ] );
 		$first_version = get_option('epkb_version_first');
+
+		//Theme Name and Version
+		$active_theme = wp_get_theme();
+		$theme_info = $active_theme->get( 'Name' ) . ' ' . $active_theme->get( 'Version' );
 		
 		// send feedback
 		$api_params = array(
-			'epkb_action'        => 'epkb_process_user_feedback',
-			'feedback_type' 	   => $reason_type,
-			'feedback_input'     => $reason_input,
-			'plugin_name'        => 'Echo Knowledge Base',
-			'plugin_version'     => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
-			'first_version'      => empty($first_version) ? 'N/A' : $first_version,
-			'php_version'	      => PHP_VERSION,
-			'wp_version'	 	   => $wp_version
+			'epkb_action'      => 'epkb_process_user_feedback',
+			'feedback_type' 	 => $reason_type,
+			'feedback_input'   => $reason_input,
+			'plugin_name'      => 'Echo Knowledge Base',
+			'plugin_version'   => class_exists('Echo_Knowledge_Base') ? Echo_Knowledge_Base::$version : 'N/A',
+			'first_version'    => empty($first_version) ? 'N/A' : $first_version,
+			'wp_version'	 	 => $wp_version,
+			'theme_info'		 => $theme_info,
 		);
 
 		// Call the API
@@ -149,12 +153,9 @@ class EPKB_Deactivate_Feedback {
 				  'no_longer_needed' => [
 					  'title' => __( 'I no longer need the plugin', 'echo-knowledge-base' ),
 					  'input_placeholder' => '',
-					  'alert' => sprintf( __( 'Did you know we launched a new Elementor plugin for writing posts, articles, and documents?', 'echo-knowledge-base' ),
-						                        '<a href="' . $pro_link . '" target="_blank">Pro Bundle</a>'),
-					  'button' => [
-						  'title' => __( 'Contact us for Help', 'echo-knowledge-base' ),
-						  'url' => 'https://www.echoknowledgebase.com/deactivation-technical-support/'
-					  ]
+					  'alert' => sprintf( __( 'Did you know we launched a new Elementor plugin for writing posts, articles, and documents? %s', 'echo-knowledge-base' ),
+						                        '<a href="https://www.creative-addons.com/" target="_blank">Learn More <i class="epkbfa epkbfa-external-link"></i></a>'),
+					  
 				  ],
 					'missing_feature' => [
 					   'title' => __( 'I\'m missing a feature', 'echo-knowledge-base' ),
@@ -180,10 +181,10 @@ class EPKB_Deactivate_Feedback {
 		$features_html = '<div class="epkb-deactivate-features">';
 		$features_html .= '<div class="epkb-deactivate-features__heading">' . __( 'We have these additional features in our addons', 'echo-knowledge-base' ) . '</div>';
 		$features_html .= '<ul>
-								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/" target="_blank">Advanced Search <i class="epkbfa epkbfa-external-link"></i></a> - analytics, tag search, more settings</li>
-								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/" target="_blank">More Layouts <i class="epkbfa epkbfa-external-link"></i></a> - sidebar, grid layout</li>
-								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/access-manager/" target="_blank">Access & Permissions <i class="epkbfa epkbfa-external-link"></i></a> - roles, groups, content restriction</li>
-								<li><a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank">And more... <i class="epkbfa epkbfa-external-link"></i></a></li>
+								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/advanced-search/" target="_blank">' . __( 'Advanced Search', 'echo-knowledge-base' ) . ' <i class="epkbfa epkbfa-external-link"></i></a> ' . __( '- analytics, tag search, more settings', 'echo-knowledge-base' ) . '</li>
+								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/elegant-layouts/" target="_blank">' . __( 'More Layouts', 'echo-knowledge-base' ) . ' <i class="epkbfa epkbfa-external-link"></i></a> ' . __( '- sidebar, grid layout', 'echo-knowledge-base' ) . '</li>
+								<li><a href="https://www.echoknowledgebase.com/wordpress-plugin/access-manager/" target="_blank">' . __( 'Access & Permissions', 'echo-knowledge-base' ) . ' <i class="epkbfa epkbfa-external-link"></i></a> ' . __( '- roles, groups, content restriction', 'echo-knowledge-base' ) . '</li>
+								<li><a href="https://www.echoknowledgebase.com/bundle-pricing/" target="_blank">' . __( 'And more...', 'echo-knowledge-base' ) . ' <i class="epkbfa epkbfa-external-link"></i></a></li>
 						  </ul>';
 		$features_html .= '</div>';
 		return $features_html;

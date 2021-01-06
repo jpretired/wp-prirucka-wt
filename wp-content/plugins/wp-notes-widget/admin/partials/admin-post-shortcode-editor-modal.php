@@ -1,11 +1,11 @@
   <div style="">
     <div class="wp-notes-widget-bootstrap" >
       <div class="modal fade" id="wp-notes-widget__shortcode-editor-modal"  tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title"><?php esc_html_e('Notes Shortcode Editor','wp-notes-widget'); ?></h4>
+                <h4 class="modal-title"><?php esc_html_e('Notes Shortcode Editor','wp-notes-widget'); ?></h4>
+	            <button type="button" class="close" data-dismiss="modal"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
               
@@ -15,17 +15,17 @@
 
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#visual" aria-controls="visual" role="tab" data-toggle="tab"><?php esc_html_e('Visual Settings','wp-notes-widget'); ?></a></li>
-                <li role="presentation"><a href="#display" aria-controls="display" role="tab" data-toggle="tab"><?php esc_html_e('Display Notes','wp-notes-widget'); ?></a></li>
-                <li role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab"><?php esc_html_e('General Settings','wp-notes-widget'); ?></a></li>
-                <li role="presentation"><a href="#font-style" aria-controls="font-style" role="tab" data-toggle="tab"><?php esc_html_e('Font Style','wp-notes-widget'); ?></a></li>
-                <li role="presentation"><a href="#shortcode" aria-controls="shortcode" role="tab" data-toggle="tab"><?php esc_html_e('Shortcode Settings','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item"><a class="active nav-link" href="#visual" aria-controls="visual" role="tab" data-toggle="tab"><?php esc_html_e('Visual Settings','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link"  href="#display" aria-controls="display" role="tab" data-toggle="tab"><?php esc_html_e('Display Notes','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link" href="#general" aria-controls="general" role="tab" data-toggle="tab"><?php esc_html_e('General Settings','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link" href="#font-style" aria-controls="font-style" role="tab" data-toggle="tab"><?php esc_html_e('Font Style','wp-notes-widget'); ?></a></li>
+                <li role="presentation" class="nav-item" ><a class="nav-link" href="#shortcode" aria-controls="shortcode" role="tab" data-toggle="tab"><?php esc_html_e('Shortcode Settings','wp-notes-widget'); ?></a></li>
               </ul>
 
               <!-- Tab panes -->
               <div class="wp-notes-widget--tab-content-container">
                 <div class="tab-content">
-                  <section role="tabpanel" class="tab-pane active fade in" id="visual">
+                  <div role="tabpanel" class="tab-pane active" id="visual">
                     <a href='#' class="wp-notes-widget__scroll-to-bottom hidden" ><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
                     <header>
                       <h4><?php esc_html_e('Visual Settings','wp-notes-widget'); ?></h4>
@@ -104,8 +104,8 @@
                       </select>                    
                     </div>
 
-                  </section>
-                  <section role="tabpanel" class="tab-pane fade" id="display">
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="display">
                     <a href='#' class="wp-notes-widget__scroll-to-bottom hidden" ><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
                     <header>
                       <h4><?php esc_html_e('Show/Hide Notes', 'wp-notes-widget' ) ?></h4>
@@ -162,15 +162,15 @@
                             </li>
                             <?php
                           }
-                          wp_reset_postdata();
+                          wp_reset_postdata(); wp_reset_query();
                         ?>
                       </ul>
                     </div> 
                     <div id="wp-notes-widget__settings__show-category" class="hidden wp-notes-widget__settings__show-notes-container" >
                       <p><i class="fa fa-info-circle" aria-hidden="true"></i> <?php esc_html_e('Note categories are available in', 'wp-notes-widget'); ?> <a href='<?php echo WP_NOTES_WIDGET_PRO_LINK ?>?utm_source=wp-notes-widget-plugin&utm_medium=shortcode-settings-modal-categories'>WP Notes Widget PRO</a>.</p>
                     </div>                  
-                  </section>
-                  <section role="tabpanel" class="tab-pane fade " id="general">
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade " id="general">
                     <a href='#' class="wp-notes-widget__scroll-to-bottom hidden" ><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
                     <header>
                       <h4><?php esc_html_e('General Settings', 'wp-notes-widget'); ?></h4> 
@@ -211,7 +211,7 @@
                         <label for="wp-notes-widget__settings__no-uppercase"><?php esc_html_e('Do not force uppercase letters', 'wp-notes-widget'); ?></label>
                       </li>
                     </ul>                  
-                  </section>
+                  </div>
                   <section role="tabpanel" class="tab-pane fade" id="font-style">
                     <a href='#' class="wp-notes-widget__scroll-to-bottom hidden" ><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
                     <header>
@@ -303,7 +303,7 @@
               
             </div>
             <div class="modal-footer">
-              <button type="button"   class="btn btn-default" data-dismiss="modal"><?php esc_html_e('Close', 'wp-notes-widget'); ?></button>
+              <button type="button"  class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e('Close', 'wp-notes-widget'); ?></button>
               <!--
                 <button type="button" id="wp-notes-widget--insert-shortcode"  class="btn btn-primary"><?php esc_html_e('Insert and Close', 'wp-notes-widget'); ?></button>
               -->

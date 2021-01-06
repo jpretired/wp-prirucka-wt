@@ -21,30 +21,30 @@ class EPKB_KB_Wizard_Cntrl {
 
 		// verify that request is authentic
 		if ( empty( $_REQUEST['_wpnonce_apply_wizard_changes'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce_apply_wizard_changes'], '_wpnonce_apply_wizard_changes' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (161)' );
 		}
 
 		// ensure that user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (162)' );
 		}
 
 		// get current KB ID
 		$wizard_kb_id = EPKB_Utilities::post('epkb_wizard_kb_id');
 		if ( empty($wizard_kb_id) || ! EPKB_Utilities::is_positive_int( $wizard_kb_id ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid wizard id parameter (2). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid wizard id parameter (2). Please refresh your page', 'echo-knowledge-base' ) . ' (163)' );
 		}
 
 		// get Wizard type
 		$wizard_type = EPKB_Utilities::post('wizard_type');
 		if ( empty($wizard_type) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid wizard type parameter (22). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid wizard type parameter (22). Please refresh your page', 'echo-knowledge-base' ) . ' (164)' );
 		}
 
 		// get new KB template related configuration
 		$new_config_post = EPKB_Utilities::post('kb_config', array());
 		if ( empty($new_config_post) || count($new_config_post) < 100 ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid post parameters (1). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid post parameters (1). Please refresh your page', 'echo-knowledge-base' ) . ' (165)' );
 		}
 
 		// get Wizard type specific filter
@@ -68,7 +68,7 @@ class EPKB_KB_Wizard_Cntrl {
 				$wizard_fields = EPKB_KB_Wizard_Global::$global_fields;
 				break;
 			default:
-				EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters - Wizard type. Please refresh your page', 'echo-knowledge-base' ) );
+				EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters - Wizard type. Please refresh your page', 'echo-knowledge-base' ) . ' (166)' );
 				return;
 		}
 
@@ -89,7 +89,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// get current Add-ons configuration
 		$orig_config = apply_filters( 'epkb_all_wizards_get_current_config', $orig_config, $wizard_kb_id );
 		if ( empty($orig_config) || count($orig_config) < 3 ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (111). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) . ' (169)' );
 		}
 
 		// overwrite current KB configuration with new configuration from this Wizard
@@ -114,7 +114,7 @@ class EPKB_KB_Wizard_Cntrl {
 				$this->apply_global_wizard_changes( $orig_config, $new_config );
 				break;
 			default:
-				EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters - Wizard type. Please refresh your page', 'echo-knowledge-base' ) );
+				EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters - Wizard type. Please refresh your page', 'echo-knowledge-base' ) . ' (170)' );
 				return;
 		}
 	}
@@ -133,7 +133,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$kb_name = empty($kb_name) ? '' : substr( $kb_name, 0, 50 );
 		$kb_name = sanitize_text_field($kb_name);
 		if ( empty($kb_name) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (3). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) . ' (171)' );
 		}
 
 		// if user selectes Image theme then change font icons to image icons
@@ -179,7 +179,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// set sidebar priority
 		$article_sidebar_component_priority = EPKB_Utilities::post('article_sidebar_component_priority');
 		if ( empty($article_sidebar_component_priority) || ! array( $article_sidebar_component_priority ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid priority parameter (2). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid priority parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (172)' );
 		}
 
 		// sanitize
@@ -301,7 +301,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// set sidebar priority
 		$article_sidebar_component_priority = EPKB_Utilities::post('article_sidebar_component_priority');
 		if ( empty($article_sidebar_component_priority) || ! array( $article_sidebar_component_priority ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid priority parameter (2). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid priority parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (173)' );
 		}
 
 		// sanitize
@@ -537,7 +537,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$sequence_settings = EPKB_Utilities::post('sequence_settings', array());
 		$kb_id = EPKB_Utilities::post('kb_id', 0);
 		if ( empty($sequence_settings) || empty($kb_id) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (14). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (14). Please refresh your page', 'echo-knowledge-base' ) . ' (174)' );
 		}
 		
 		$_GET['wizard-on'] = true;
@@ -553,7 +553,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$articles_admin = new EPKB_Articles_Admin();
 		$article_seq = $articles_admin->get_articles_sequence_non_custom( $kb_id, $articles_order_method );
 		if ( $article_seq === false ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (1)', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (175)' );
 		}
 
 		// ARTICLES: change to custom sequencde if necessary
@@ -569,7 +569,7 @@ class EPKB_KB_Wizard_Cntrl {
 		$cat_admin = new EPKB_Categories_Admin();
 		$category_seq = $cat_admin->get_categories_sequence_non_custom( $kb_id, $categories_order_method );
 		if ( $category_seq === false ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (3)', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (176)' );
 		}
 
 		// CATEGORIES: change to custom sequence if necessary
@@ -581,7 +581,7 @@ class EPKB_KB_Wizard_Cntrl {
 		}
 
 		if ( ! $article_seq || ! $category_seq ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (4)', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (177)' );
 		}
 
 		// ensure user can order articles and categories easily
@@ -633,7 +633,7 @@ class EPKB_KB_Wizard_Cntrl {
 		// get new KB config
 		$new_config_post = EPKB_Utilities::post('kb_config', array());
 		if ( empty($new_config_post) || count($new_config_post) < 100 ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (10). Please refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameters (10). Please refresh your page', 'echo-knowledge-base' ) . ' (178)' );
 		}
 		
 		$_POST['epkb-wizard-demo-data'] = true;

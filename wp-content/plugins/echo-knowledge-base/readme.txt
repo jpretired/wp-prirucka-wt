@@ -5,7 +5,7 @@ Contributors: echoplugins
 Tags: knowledge base, faq, knowledgebase, docs, documents, documentation, help, wiki, knowledge, table of content, TOC, articles
 Requires at least: 4.0
 Tested up to: 5.6
-Stable tag: 7.0.2
+Stable tag: 7.0.3
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,13 @@ Full searchable docs can be found at [Knowledge Base](http://www.echoknowledgeba
 
 == Changelog ==
 
+= 7.0.3 =
+Release Date: Dec 18, 2020
+
+Changes:
+* Update: Moved Article comments to within article width
+* Fix: Fixes for the frontend Configuration Editor
+* Fix: Cleanup and minor fixes
 
 = 7.0.2 =
 Release Date: Nov 27, 2020
@@ -246,35 +253,6 @@ Changes:
 * Fix: Archive tags page
 * Fix: Cleanup and minor fixes
 
-= 6.5.1 =
-Release Date: June 7, 2020
-
-Changes:
-* New: Import and export of KB config
-* Update: Category Archive Page articles ordering
-* Update: Update translation strings
-* Fix: Initial KB URL and Wizard issues
-
-= 6.4.2 =
-Release Date: April 26th, 2020
-
-Changes:
-* Update: Improve icon configuration
-* Fix: Wizard issues
-
-= 6.4.1 =
-Release Date: April 15th, 2020
-
-Changes:
-* Fix: Article sidebars and TOC for V1
-
-= 6.4.0 =
-Release Date: April 13th, 2020
-
-Changes:
-* New: Article structure v2 with sidebars
-* Update: Language translations
-* Fix: Wizard issues
 
 
 Find out more about our new features in [New Features](https://www.echoknowledgebase.com/new-features/).

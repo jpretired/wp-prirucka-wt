@@ -45,7 +45,6 @@ function epkbShowErrorNotices() {
 		jQuery('.epkb-js-error-notice').find('.epkb-js-error-url').text(error.url);
 		jQuery('.epkb-js-error-notice').show('fast');
 
-		console.log();
 	}
 
 	jQuery('.epkb-js-error-close').click(function(){

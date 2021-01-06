@@ -12,7 +12,7 @@ class EPKB_Editor_Article_Page_Config extends EPKB_Editor_Base_Config {
 	 * Article Page zone
 	 * @return array
 	 */
-	private static function page_zone() {
+	public static function page_zone() {
 
 		$settings = [
 
@@ -982,14 +982,21 @@ class EPKB_Editor_Article_Page_Config extends EPKB_Editor_Base_Config {
 
 			'back_navigation_border'        => [
 				'editor_tab'        => self::EDITOR_TAB_FEATURES,
-				'reload'            => '1',
-				'separator_above'   => 'yes'
+				'target_selector' => '.eckb-navigation-button',
+				'style_name' => 'border-style',
+				'separator_above'   => 'yes',
 			],
 			'back_navigation_border_radius' => [
 				'editor_tab' => self::EDITOR_TAB_FEATURES,
+				'target_selector' => '.eckb-navigation-button',
+				'style_name' => 'border-radius',
+				'postfix' => 'px'
 			],
 			'back_navigation_border_width'  => [
 				'editor_tab' => self::EDITOR_TAB_FEATURES,
+				'target_selector' => '.eckb-navigation-button',
+				'style_name' => 'border-width',
+				'postfix' => 'px'
 			],
 
 			// Advanced Tab
@@ -1084,17 +1091,23 @@ class EPKB_Editor_Article_Page_Config extends EPKB_Editor_Base_Config {
 			],
 			'categories_layout_list_mode' => [
 				'editor_tab' => self::EDITOR_TAB_FEATURES,
+				'reload' => '1'
 			],
 			'categories_box_font_size' => [
 				'editor_tab' => self::EDITOR_TAB_FEATURES,
-				'reload' => '1'
+				'styles' => [
+					'.eckb-article-cat-layout-list' => 'font-size',
+					'.eckb-article-cat-layout-list a' => 'font-size',
+				],
+				'style' => 'slider',
+				'postfix' => 'px'
 			],
 		];
 
 		return [
 			'categories_list' => [
 				'title'     =>  __( 'Categories List', 'echo-knowledge-base' ),
-				'classes'   => '',
+				'classes'   => '.eckb-article-cat-layout-list',
 				'settings'  => $settings
 			]];
 	}

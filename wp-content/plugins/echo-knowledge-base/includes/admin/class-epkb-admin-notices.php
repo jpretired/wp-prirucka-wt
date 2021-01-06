@@ -31,7 +31,11 @@ class EPKB_Admin_Notices {
 		}
 
 		// display ONE TIME and LONG notices
-		$notices += get_option( 'epkb_ongoing_notices', array() );
+		$notice = get_option( 'epkb_ongoing_notices', array() );
+		if ( ! empty($notice) ) {
+			$notices += $notice;
+		}
+
 		$update_notices = false;
 		foreach ( $notices as $key => $notice ) {
 

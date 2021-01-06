@@ -230,7 +230,7 @@ class EPKB_Templates {
 	 *
 	 * @return string
 	 */
-	public static function get_template_part( $slug, $name = null, /** @noinspection PhpUnusedParameterInspection */ $kb_config,
+	public static function get_template_part( $slug, $name, /** @noinspection PhpUnusedParameterInspection */ $kb_config,
 		/** @noinspection PhpUnusedParameterInspection */$article, $load = true ) {
 		// Execute code for this part
 		do_action( 'epkb_get_template_part_' . $slug, $slug, $name );

@@ -203,7 +203,7 @@
       }
 
       print $widget_string;
-
+      wp_reset_postdata();
     } // end widget
     
     

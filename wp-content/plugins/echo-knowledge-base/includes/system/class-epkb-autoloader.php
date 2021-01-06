@@ -1,6 +1,6 @@
 <?php  if ( ! defined( 'ABSPATH' ) ) exit;
 
-spl_autoload_register(array('EPKB_Autoloader', 'autoload'), false);
+spl_autoload_register( array('EPKB_Autoloader', 'autoload') );
 
 /**
  * A class which contains the autoload function, that the spl_autoload_register

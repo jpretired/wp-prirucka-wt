@@ -89,7 +89,19 @@ jQuery(document).ready(function($) {
 
 			// a lot of lo-end themes don't use body_class()
 			app.iframe.find('body').addClass('epkb-editor-preview');
+			
+			// Get the Article Content Body Position
+			let articleContentBodyPosition = app.iframe.find( '#eckb-article-content-body' ).position();
 
+			
+			// If the setting is on, Offset the Sidebar to match the article Content
+			if( app.iframe.find('.eckb-article-page--L-sidebar-to-content').length > 0 ){
+				app.iframe.find('#eckb-article-page-container-v2').find( '#eckb-article-left-sidebar ').css( "margin-top" , articleContentBodyPosition.top+'px' );
+			}
+			if( app.iframe.find('.eckb-article-page--R-sidebar-to-content').length > 0 ){
+				app.iframe.find('#eckb-article-page-container-v2').find( '#eckb-article-right-sidebar ').css( "margin-top" , articleContentBodyPosition.top+'px' );
+			}
+			
 			// highlight edit zones
 			app.addEditZones();
 
@@ -297,6 +309,11 @@ jQuery(document).ready(function($) {
 				$('#epkb-editor-settings-layouts').show();
 			}
 			
+			// open presets 
+			if ( $(this).data('name') == 'asea-presets' ) {
+				$('#epkb-editor-settings-asea-presets').show();
+			}
+			
 			app.showBackButtons();
 			app.activeZone = 'settings_panels';
 			
@@ -473,6 +490,15 @@ jQuery(document).ready(function($) {
 				}
 			} 
 			
+			// check presets 
+			if ( $(this).closest('.epkb-editor-settings-control-type-json-button').length > 0 && typeof epkb_editor_addon_data !== 'undefined' && typeof epkb_editor_addon_data.asea_presets !== 'undefined' && typeof epkb_editor_addon_data.asea_presets[newVal] !== 'undefined' ) {
+				for ( let fieldName in epkb_editor_addon_data.asea_presets[newVal] ) {
+					app.updateOption( fieldName, epkb_editor_addon_data.asea_presets[newVal][fieldName] );
+				}
+				
+				refresh = true;
+			}
+			
 			for ( let settingGroupSlug in app.currentSettings ) {
 				if ( typeof app.currentSettings[settingGroupSlug].settings[name] == 'undefined' ) {
 					continue;
@@ -621,6 +647,7 @@ jQuery(document).ready(function($) {
 				label: field.label,
 				value: field.value,
 				style: field.style,
+				separator_above: field.separator_above,
 				html: ( typeof field.html != 'undefined' ),
 				description: ( typeof field.description == 'undefined' ) ? '' : field.description
 			} ) );
@@ -850,7 +877,7 @@ jQuery(document).ready(function($) {
 
 		onZoneClick: function( event ){
 			event.stopPropagation();
-			$( 'body' ).trigger( 'click.wpcolorpicker' );
+			$( 'body' ).trigger( 'click.epkbcolorpicker' );
 			
 			let zone = $(this).data('zone'),
 				app = event.data;
@@ -1064,11 +1091,6 @@ jQuery(document).ready(function($) {
 						continue;
 					}
 					
-					if ( field.target_selector ==  '#eckb-article-page-container-v2 #eckb-article-right-sidebar' ) {
-					console.log(fieldName)
-					console.log(field.target_selector);
-					console.log(field.style_name);
-					}
 					this.styles.append(`
 						${field.target_selector} {
 							${field.style_name}: ${field.value}${ this.getPostfix( field.postfix ) }${important};
@@ -1231,8 +1253,10 @@ jQuery(document).ready(function($) {
 				
 				if ( togglerState ) {
 					$('[data-field='+fieldName+']').show();
+					$('[data-separator='+fieldName+']').show();
 				} else {
 					$('[data-field='+fieldName+']').hide();
+					$('[data-separator='+fieldName+']').hide();
 				}
 			}
 		},
@@ -1268,7 +1292,7 @@ jQuery(document).ready(function($) {
 
 		activateColorPickers: function() {
 			if ( $('#epkb-editor').find('.epkb-editor-settings-control-type-color input').length ) {
-				$('#epkb-editor').find('.epkb-editor-settings-control-type-color input').wpColorPicker({
+				$('#epkb-editor').find('.epkb-editor-settings-control-type-color input').epkbColorPicker({
 					change: function( colorEvent, ui) {
 						setTimeout( function() {
 							$( colorEvent.target).trigger('change');
@@ -1276,7 +1300,7 @@ jQuery(document).ready(function($) {
 					},
 					// a callback to fire when the input is emptied or an invalid color
 					clear: function( event, ui) {
-						let input = $(event.target).closest('.epkb-editor-settings-control__input').find('.wp-picker-input-wrap label input[type=text]');
+						let input = $(event.target).closest('.epkb-editor-settings-control__input').find('.epkb-picker-input-wrap label input[type=text]');
 						
 						if ( input.length < 1 ) {
 							return;
@@ -1287,7 +1311,6 @@ jQuery(document).ready(function($) {
 						}
 						
 						input.iris('color', input.data('default_color'));
-						
 					}
 				});
 			}
@@ -1447,7 +1470,7 @@ jQuery(document).ready(function($) {
 				beforeSend: function (xhr) {
 					app.showLoader();
 				}
-			}).done(function (response) {
+			}).success(function (response) {
 				
 				if ( typeof response.error == 'undefined' ) {
 					// success 
@@ -1462,6 +1485,12 @@ jQuery(document).ready(function($) {
 					});
 				}
 
+			}).fail(function (response, textStatus, error) {
+				let msg = ( error ? error : 'unknown error' );
+				app.showMessage({
+					text: msg,
+					type: 'error'
+				});
 			}).always(function () {
 				app.removeLoader();
 			});
@@ -1472,7 +1501,7 @@ jQuery(document).ready(function($) {
 		showMenu: function ( event ) {
 			let app = event.data;
 			event.stopPropagation();
-			$( 'body' ).trigger( 'click.wpcolorpicker' );
+			$( 'body' ).trigger( 'click.epkbcolorpicker' );
 			
 			// clear modal 
 			app.clearModal();
@@ -1496,7 +1525,7 @@ jQuery(document).ready(function($) {
 			
 			event.stopPropagation();
 			
-			$( 'body' ).trigger( 'click.wpcolorpicker' );
+			$( 'body' ).trigger( 'click.epkbcolorpicker' );
 			
 			let app = event.data;
 
@@ -1521,10 +1550,12 @@ jQuery(document).ready(function($) {
 			$('.epkb-editor-settings-control-image-select input[value='+epkb_editor_settings.settings_zone.settings.kb_main_page_layout.value+']').prop('checked', 'checked');
 			
 			$('.epkb-editor-settings-panel-global__links-container').append(
-				( epkb_editor.page_type == 'main-page' ? EPKBEditorTemplates.menuLinks( '#', 'templates', 'sliders', 'Theme' ) : '' ) +
-				( epkb_editor.page_type == 'main-page' ? EPKBEditorTemplates.menuLinks( '#', 'layouts', 'sitemap', 'Layouts' ) : '' ) +
-				EPKBEditorTemplates.menuLinks( epkb_editor.kb_url+'&page=epkb-kb-configuration&wizard-global', 'urls', 'globe', 'URLs and Slug' ) +
-				EPKBEditorTemplates.menuLinks( epkb_editor.kb_url+'&page=epkb-kb-configuration&wizard-ordering', 'ordering', 'object-group', 'Order Categories and Articles' )
+				( epkb_editor.page_type == 'main-page' ? EPKBEditorTemplates.menuLinks( '#', 'templates', 'sliders', epkb_editor.theme_link ) : '' ) +
+				( epkb_editor.page_type == 'main-page' ? EPKBEditorTemplates.menuLinks( '#', 'layouts', 'sitemap', epkb_editor.layouts_link ) : '' ) +
+				EPKBEditorTemplates.menuLinks( epkb_editor.kb_url+'&page=epkb-kb-configuration&wizard-global', 'urls', 'globe', epkb_editor.urls_and_slug ) +
+				EPKBEditorTemplates.menuLinks( epkb_editor.kb_url+'&page=epkb-kb-configuration&wizard-ordering', 'ordering', 'object-group', epkb_editor.order_categories_and_articles ) + 
+				EPKBEditorTemplates.menuLinks( epkb_editor.kb_url+'&page=epkb-manage-kb', 'manage_kb', 'pencil-square-o', epkb_editor.rename_kb ) + 
+				( ( typeof epkb_editor_addon_data.asea_presets == 'undefined' ) ? '' : EPKBEditorTemplates.menuLinks( '#', 'asea-presets', 'sitemap', epkb_editor.presets_link_title ) )
 			);
 			
 			// add settings on the global tab 
@@ -1699,7 +1730,7 @@ jQuery(document).ready(function($) {
 		divider: function () {
 			return `<div class="epkb-editor-settings-separator"></div>`;
 		},
-		
+
 		select: function ( data ) {
 			
 			data = Object.assign( {
@@ -1714,7 +1745,7 @@ jQuery(document).ready(function($) {
 			let html = '';
 			if ( typeof data.separator_above !== 'undefined' ) {
 				if( data.separator_above === 'yes' ){
-					html += ` <div class="epkb-editor-settings-control-separator"></div>`;
+					html += ` <div class="epkb-editor-settings-control-separator" data-separator="${data.name}"></div>`;
 				}
 			}
 
@@ -1794,7 +1825,7 @@ jQuery(document).ready(function($) {
 			let html = '';
 			if ( typeof data.separator_above !== 'undefined' ) {
 				if( data.separator_above === 'yes' ){
-					html += ` <div class="epkb-editor-settings-control-separator"></div>`;
+					html += ` <div class="epkb-editor-settings-control-separator" data-separator="${data.name}"></div>`;
 				}
 			}
 
@@ -1824,15 +1855,23 @@ jQuery(document).ready(function($) {
 				value: '',
 				style: '',
 				description: '',
+				separator_above: '',
 				html: false
 			}, data );
 
+			let output = '';
 			if ( typeof data.style == 'undefined' ) {
 				data.style = 'full'
 			}
+
+			if ( typeof data.separator_above !== 'undefined' ) {
+				if( data.separator_above === 'yes' ){
+					output += ` <div class="epkb-editor-settings-control-separator" data-separator="${data.name}"></div>`;
+				}
+			}
 			
 			if ( data.html ) {
-				return `
+				return output += `
 					<div class="epkb-editor-settings-control-container epkb-editor-settings-control-type-text epkb-control-text--${data.style}" data-field="${data.name}">
 						<div class="epkb-editor-settings-control__field">
 							<label class="epkb-editor-settings-control__title">${data.label}</label>
@@ -1844,9 +1883,9 @@ jQuery(document).ready(function($) {
 					</div>
 				`;
 				
-			} 
-			
-			return `
+			}
+
+			return output += `
 				<div class="epkb-editor-settings-control-container epkb-editor-settings-control-type-text epkb-control-text--${data.style}" data-field="${data.name}">
 					<div class="epkb-editor-settings-control__field">
 						<label class="epkb-editor-settings-control__title">${data.label}</label>
@@ -1935,7 +1974,7 @@ jQuery(document).ready(function($) {
 
 			if ( typeof data.separator_above !== 'undefined' ) {
 				if( data.separator_above === 'yes' ){
-					html += ` <div class="epkb-editor-settings-control-separator"></div>`;
+					html += ` <div class="epkb-editor-settings-control-separator" data-separator="${data.name}"></div>`;
 				}
 			}
 			if ( typeof data.style == 'undefined' ) {
@@ -1996,7 +2035,7 @@ jQuery(document).ready(function($) {
 
 			if ( typeof data.separator_above !== 'undefined' ) {
 				if( data.separator_above === 'yes' ){
-					html += ` <div class="epkb-editor-settings-control-separator"></div>`;
+					html += ` <div class="epkb-editor-settings-control-separator" data-separator="${data.name}"></div>`;
 				}
 			}
 

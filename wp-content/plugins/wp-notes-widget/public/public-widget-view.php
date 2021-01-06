@@ -20,3 +20,4 @@
     </ul>
 
   <?php require 'partials/public-widget-footer-partial.php'; ?>
+  <?php wp_reset_postdata(); wp_reset_query(); ?>

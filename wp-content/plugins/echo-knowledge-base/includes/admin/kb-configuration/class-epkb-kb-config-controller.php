@@ -31,7 +31,7 @@ class EPKB_KB_Config_Controller {
 
 		// ensure user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			$this->ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) );
+			$this->ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (111)' );
 		}
 
 		$page_type = isset($_POST['page_type']) ? EPKB_Utilities::sanitize_english_text( $_POST['page_type'] ) : '';
@@ -46,20 +46,20 @@ class EPKB_KB_Config_Controller {
 
 		// retrieve user input
 		if ( empty( $_POST['categories_sequence_new_value'] ) || empty($_POST['articles_sequence_new_value']) ) {
-			$this->ajax_show_error_die( __( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) );
+			$this->ajax_show_error_die( __( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) . ' (112)' );
 		}
 
 		// retrieve KB ID we are saving
 		$kb_id = empty( $_POST['epkb_kb_id'] ) ? '' : EPKB_Utilities::sanitize_get_id( $_POST['epkb_kb_id'] );
 		if ( empty($kb_id) || is_wp_error( $kb_id ) ) {
 			EPKB_Logging::add_log( "invalid kb id", $kb_id );
-			$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) );
+			$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (113)' );
 		}
 
 		// retrieve current KB configuration
 		$new_kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $new_kb_config ) ) {
-			$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (0)', 'echo-knowledge-base' ) );
+			$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (114)' );
 		}
 
 		// retrieve user input so we can refresh the KB Main or Article page
@@ -73,7 +73,7 @@ class EPKB_KB_Config_Controller {
 		
 		if ( $new_sequence === false ) {
 			EPKB_Logging::add_log( "Could not retrieve new sequence" );
-			$this->ajax_show_error_die( __( 'Error occurred. Could not retrieve new sequence.', 'echo-knowledge-base' ) );
+			$this->ajax_show_error_die( __( 'Error occurred. Could not retrieve new sequence.', 'echo-knowledge-base' ) . ' (115)' );
 		}
 
 		// SEQUENCE ARTICLES and CATEGORIES
@@ -87,14 +87,14 @@ class EPKB_KB_Config_Controller {
 			$articles_admin = new EPKB_Articles_Admin();
 			$article_seq = $articles_admin->get_articles_sequence_non_custom( $kb_id, $articles_order_method );
 			if ( $article_seq === false ) {
-				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (1)', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (116)' );
 			}
 
 			// ARTICLES: change to custom sequencde if necessary
 			if ( $articles_sequence_new_value == 'user-sequenced' ) {
 				$new_articles_ids_obj = $config_seq->update_articles_order( $kb_id, $new_sequence, new EPKB_Articles_Array( $article_seq ) );
 				if ( $new_articles_ids_obj === false ) {
-					$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser (2)', 'echo-knowledge-base' ) );
+					$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (117)' );
 				}
 				$article_seq = $new_articles_ids_obj->ids_array;
 				
@@ -105,20 +105,20 @@ class EPKB_KB_Config_Controller {
 			$cat_admin = new EPKB_Categories_Admin();
 			$category_seq = $cat_admin->get_categories_sequence_non_custom( $kb_id, $categories_order_method );
 			if ( $category_seq === false ) {
-				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (3)', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (118)' );
 			}
 
 			// CATEGORIES: change to custom sequence if necessary
 			if ( $categories_sequence_new_value == 'user-sequenced' ) {
 				$new_cat_ids_obj = $config_seq->update_categories_order( $kb_id, $new_sequence, new EPKB_Categories_Array( $category_seq ) );
 				if ( $new_cat_ids_obj === false ) {
-					$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser (BD06)', 'echo-knowledge-base' ) );
+					$this->ajax_show_error_die( __( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (119)' );
 				}
 				$category_seq = $new_cat_ids_obj->ids_array;
 			}
 
 			if ( ! $article_seq || ! $category_seq ) {
-				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again. (4)', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( __( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (120)' );
 			}
 		}
 
@@ -142,20 +142,20 @@ class EPKB_KB_Config_Controller {
 
 		// ensure user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (121)');
 		}
 
 		// retrieve KB ID we are saving
 		$kb_id = empty($_POST['epkb_kb_id']) ? '' : EPKB_Utilities::sanitize_get_id( $_POST['epkb_kb_id'] );
 		if ( empty($kb_id) || is_wp_error( $kb_id ) ) {
 			EPKB_Logging::add_log( "invalid kb id", $kb_id );
-			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (122)');
 		}
 
 		// retrieve current KB configuration
 		$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $orig_config ) ) {
-			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again. (5)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (123)');
 		}
 
 		// retrieve user input
@@ -182,30 +182,30 @@ class EPKB_KB_Config_Controller {
 
 		// ensure user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (124)');
 		}
 
 		// validate user input
 		if ( empty($_POST['target_type']) || empty($_POST['target_name']) || empty($_POST['epkb_chosen_main_page_layout']) ) {
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) . ' (125)');
 		}
 
 		// retrieve KB ID we are saving
 		$kb_id = empty($_POST['epkb_kb_id']) ? '' : EPKB_Utilities::sanitize_get_id( $_POST['epkb_kb_id'] );
 		if ( empty($kb_id) || is_wp_error( $kb_id ) ) {
 			EPKB_Logging::add_log( "invalid kb id", $kb_id );
-			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (126)');
 		}
 
 		// retrieve current KB CORE configuration
 		$current_kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $current_kb_config ) ) {
-			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again. (6)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (127)');
 		}
 
 		$target_type = sanitize_text_field( $_POST['target_type'] );
 		if ( ! in_array( $target_type, array('layout', 'style', 'search box style', 'colors', 'demo', 'advanced_search_box_style' ) ) ) {
-			$this->ajax_show_error_die(__( 'Invalid type. Please refresh your page', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid type. Please refresh your page', 'echo-knowledge-base' ) . ' (128)');
 		}
 
 		// retrieve user changes
@@ -214,7 +214,7 @@ class EPKB_KB_Config_Controller {
 		// temporary update Main Page Layout to currently chosen layout
 		$chosen_main_page_layout = sanitize_text_field( $_POST['epkb_chosen_main_page_layout'] );
 		if ( ! in_array($chosen_main_page_layout, EPKB_KB_Config_Layouts::get_main_page_layout_names()) ) {
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page. (6)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) . ' (129)');
 		}
 		$kb_config['kb_main_page_layout'] = $chosen_main_page_layout;
 
@@ -231,7 +231,7 @@ class EPKB_KB_Config_Controller {
 		     ( $target_type == 'colors' && ! in_array($target_name, EPKB_KB_Config_Layouts::get_colors_names()) ) ||
 		     ( $target_type == 'advanced_search_box_style' && ! in_array($target_name, array_keys($add_on_style_names)))
 		) {
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) . ' (130)');
 		}
 
 		// add filters for core/add-ons layouts and colors
@@ -345,20 +345,20 @@ class EPKB_KB_Config_Controller {
 
 		// validate user input
 		if ( empty($_POST['target_type']) || empty($_POST['target_name']) || empty($_POST['epkb_chosen_article_page_layout']) ) {
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page', 'echo-knowledge-base' ) . ' (131)');
 		}
 
 		// retrieve KB ID we are saving
 		$kb_id = empty($_POST['epkb_kb_id']) ? '' : EPKB_Utilities::sanitize_get_id( $_POST['epkb_kb_id'] );
 		if ( empty($kb_id) || is_wp_error( $kb_id ) ) {
 			EPKB_Logging::add_log( "invalid kb id", $kb_id );
-			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (132)');
 		}
 
 		// retrieve current KB configuration
 		$current_kb_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $current_kb_config ) ) {
-			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again. (7)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (134)');
 		}
 
 		// retrieve user changes
@@ -366,7 +366,7 @@ class EPKB_KB_Config_Controller {
 
 		$target_type = sanitize_text_field( $_POST['target_type'] );
 		if ( ! in_array( $target_type, array('layout', 'style', 'search box style', 'colors', 'demo', 'advanced_search_box_style' ) ) ) {
-			$this->ajax_show_error_die(__( 'Invalid type. Please refresh your page', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid type. Please refresh your page', 'echo-knowledge-base' ) . ' (135)');
 		}
 
 		$is_adv_search = EPKB_Utilities::is_advanced_search_enabled( $kb_config );
@@ -383,13 +383,13 @@ class EPKB_KB_Config_Controller {
 		     ( $target_type == 'colors' && ! in_array($target_name, EPKB_KB_Config_Layouts::get_colors_names()) ) ||
 		     ( $target_type == 'advanced_search_box_style' && ! in_array($target_name, array_keys($add_on_style_names))) )
 		{
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) . ' (136)');
 		}
 
 		// temporary update Main Page Layout to currently chosen layout
 		$chosen_article_page_layout = sanitize_text_field( $_POST['epkb_chosen_article_page_layout'] );
 		if ( ! in_array($chosen_article_page_layout, array_keys(EPKB_KB_Config_Layouts::get_article_page_layout_names()) ) ) {
-			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page. (7)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Invalid parameters. Please refresh your page.', 'echo-knowledge-base' ) . ' (137)');
 		}
 		$kb_config['kb_article_page_layout'] = $chosen_article_page_layout;
 
@@ -510,32 +510,32 @@ class EPKB_KB_Config_Controller {
 
 		// verify that the request is authentic and check where it comes
 		if ( empty( $_REQUEST['_wpnonce_epkb_save_kb_config'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce_epkb_save_kb_config'], '_wpnonce_epkb_save_kb_config' ) ) {
-			$this->ajax_show_error_die(__( 'Settings not saved. First refresh your page', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Settings not saved. First refresh your page', 'echo-knowledge-base' ) . ' (138)');
 		}
 
 		// ensure user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (139)');
 		}
 
 		// retrieve KB ID we are saving
 		$kb_id = empty($_POST['epkb_kb_id']) ? '' : EPKB_Utilities::sanitize_get_id( $_POST['epkb_kb_id'] );
 		if ( empty($kb_id) || is_wp_error( $kb_id ) ) {
 			EPKB_Logging::add_log( "invalid kb id", $kb_id );
-			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'This page is outdated. Please refresh your browser', 'echo-knowledge-base' ) . ' (140)');
 		}
 
 		// core handles only default KB
 		if ( $kb_id != EPKB_KB_Config_DB::DEFAULT_KB_ID && ! defined( 'E' . 'MKB_PLUGIN_NAME' ) ) {
 			EPKB_Logging::add_log("received invalid kb_id when saving config. (x5)", $kb_id );
-			$this->ajax_show_error_die(__( 'Ensure that Multiple KB add-on is active and refresh this page.', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Ensure that Multiple KB add-on is active and refresh this page.', 'echo-knowledge-base' ) . ' (141)');
 			return;
 		}
 
 		// retrieve current KB configuration
 		$orig_config = epkb_get_instance()->kb_config_obj->get_kb_config( $kb_id );
 		if ( is_wp_error( $orig_config ) ) {
-			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again. (8)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Error occurred. Please refresh your browser and try again.', 'echo-knowledge-base' ) . ' (142)');
 		}
 
 		// retrieve user input
@@ -543,10 +543,10 @@ class EPKB_KB_Config_Controller {
 		$form_fields = empty($_POST['form']) ? array() : EPKB_Utilities::retrieve_and_sanitize_form( $_POST['form'], $field_specs );
 		if ( empty($form_fields) ) {
 			EPKB_Logging::add_log("form fields missing");
-			$this->ajax_show_error_die(__( 'Form fields missing. Please refresh your browser', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Form fields missing. Please refresh your browser', 'echo-knowledge-base' ) . ' (143)');
 		} else if ( count($form_fields) < 100 ) {
 			EPKB_Logging::add_log("Found KB configuration is incomplete", count($form_fields));
-			$this->ajax_show_error_die(__( 'Some form fields are missing. Please refresh your browser and try again or contact support', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Some form fields are missing. Please refresh your browser and try again or contact support', 'echo-knowledge-base' ) . ' (144)');
 		}
 
 		$input_handler = new EPKB_Input_Filter();
@@ -557,9 +557,9 @@ class EPKB_KB_Config_Controller {
 			/* @var $result WP_Error */
 			$message = $result->get_error_data();
 			if ( empty($message) ) {
-				$this->ajax_show_error_die( $result->get_error_message(), __( 'Could not save the new configuration (2)', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( $result->get_error_message(), __( 'Could not save the new configuration', 'echo-knowledge-base' ) . ' (145)' );
 			} else {
-				$this->ajax_show_error_die( $this->generate_error_summary( $message ), __( 'Configuration NOT saved (3) due to following problems:', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( $this->generate_error_summary( $message ), __( 'Configuration NOT saved due to following problems:', 'echo-knowledge-base' ) . ' (146)' );
 			}
 		}
 
@@ -582,7 +582,7 @@ class EPKB_KB_Config_Controller {
 		$all_kb_configs = epkb_get_instance()->kb_config_obj->get_kb_configs();
 		foreach ( $all_kb_configs as $one_kb_config ) {
 			if ( $new_kb_config['id'] != $one_kb_config['id'] && $new_kb_config['kb_articles_common_path'] == $one_kb_config['kb_articles_common_path'] ) {
-				$this->ajax_show_error_die(__( 'Entered common path already exists in KB: ' . $one_kb_config['kb_name'], 'echo-knowledge-base' ));
+				$this->ajax_show_error_die(__( 'Entered common path already exists in KB: ' . $one_kb_config['kb_name'], 'echo-knowledge-base' ) . ' (147)');
 			}
 		}
 
@@ -597,9 +597,9 @@ class EPKB_KB_Config_Controller {
 			/* @var $result WP_Error */
 			$message = $result->get_error_data();
 			if ( empty($message) ) {
-				$this->ajax_show_error_die( $result->get_error_message(), __( 'Could not save the new configuration (3)', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( $result->get_error_message(), __( 'Could not save the new configuration', 'echo-knowledge-base' ) . ' (148)' );
 			} else {
-				$this->ajax_show_error_die( $this->generate_error_summary( $message ), __( 'Configuration NOT saved (4) due to following problems:', 'echo-knowledge-base' ) );
+				$this->ajax_show_error_die( $this->generate_error_summary( $message ), __( 'Configuration NOT saved due to following problems:', 'echo-knowledge-base' ) . ' (149)' );
 			}
 		}
 		
@@ -722,7 +722,7 @@ class EPKB_KB_Config_Controller {
 		// get add-on configuration from user changes if applicable
 		$add_on_config = apply_filters( 'epkb_kb_config_get_add_on_input', array(), $kb_id, $form_fields );
 		if ( ! is_array($add_on_config) || is_wp_error( $add_on_config )) {
-			$this->ajax_show_error_die(__( 'Could not change KB configuration. (8)', 'echo-knowledge-base' ));
+			$this->ajax_show_error_die(__( 'Could not change KB configuration.', 'echo-knowledge-base' ) . ' (150)');
 		}
 
 		// merge core and add-on configuration
@@ -759,7 +759,7 @@ class EPKB_KB_Config_Controller {
 	}
 
 	public function user_not_logged_in() {
-		$this->ajax_show_error_die( '<p>' . __( 'You are not logged in. Refresh your page and log in', 'echo-knowledge-base' ) . '.</p>', __( 'Cannot save your changes', 'echo-knowledge-base' ) );
+		$this->ajax_show_error_die( '<p>' . __( 'You are not logged in. Refresh your page and log in', 'echo-knowledge-base' ) . '.</p>', __( 'Cannot save your changes', 'echo-knowledge-base' ) . ' (151)' );
 	}
 
 	/**

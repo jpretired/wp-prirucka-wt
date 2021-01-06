@@ -13,7 +13,7 @@
  * @wordpress-plugin
  * Plugin Name:       WP Notes Widget
  * Description:       'Sticky note' style widget to display short, important, time sensitive information.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            Steve Puddick
  * Author URI:        http://webrockstar.net/
  * License:           GPL-2.0+

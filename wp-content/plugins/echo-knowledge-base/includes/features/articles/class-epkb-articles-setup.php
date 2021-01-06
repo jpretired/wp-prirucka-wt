@@ -238,7 +238,7 @@ class EPKB_Articles_Setup {
 
 		add_action( 'eckb-article-content-footer', array('EPKB_Articles_Setup', 'tags'), 10, 3 );
 		add_action( 'eckb-article-content-footer', array('EPKB_Articles_Setup', 'prev_next_navigation'), 10, 3 );
-		add_action( 'eckb-article-footer', array('EPKB_Articles_Setup', 'comments'), 10, 3 );
+		add_action( 'eckb-article-content-footer', array('EPKB_Articles_Setup', 'comments'), 10, 3 );
 	}
 
 	/**

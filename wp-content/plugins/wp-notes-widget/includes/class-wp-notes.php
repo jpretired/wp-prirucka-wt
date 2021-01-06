@@ -71,7 +71,7 @@ class WP_Notes {
   public function __construct() {
 
     $this->WP_Notes = 'wp-notes';
-    $this->version = '1.0.5';
+    $this->version = '1.0.6';
 
     $this->load_dependencies();
     $this->set_locale();
@@ -178,7 +178,7 @@ class WP_Notes {
   private function define_admin_hooks() {
 
     $plugin_admin = new WP_Notes_Admin( $this->get_WP_Notes(), $this->get_version() );
-
+    
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action( 'add_meta_boxes',        $plugin_admin, 'add_note_metabox' );
@@ -193,9 +193,10 @@ class WP_Notes {
     $this->loader->add_action( 'admin_init',            $plugin_admin, 'wp_notes_initialize_settings'); 
     $this->loader->add_filter( 'post_updated_messages', $plugin_admin, 'notes_post_updated_messages');
     if (is_admin()) {
-      $this->loader->add_filter( 'media_buttons',         $plugin_admin, 'shortcode_editor_button', 15);
+      $this->loader->add_filter( 'media_buttons',         $plugin_admin, 'shortcode_editor_button', 99);
     }
-    $this->loader->add_filter( 'admin_footer',          $plugin_admin, 'shortcode_editor_modal');   
+    $this->loader->add_filter( 'admin_footer',          $plugin_admin, 'shortcode_editor_modal');  
+    
   }
 
   /**

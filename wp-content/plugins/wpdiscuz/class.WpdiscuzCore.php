@@ -2,7 +2,7 @@
 /*
  * Plugin Name: wpDiscuz
  * Description: #1 WordPress Comment Plugin. Innovative, modern and feature-rich comment system to supercharge your website comment section.
- * Version: 7.0.9
+ * Version: 7.1.0
  * Author: gVectors Team
  * Author URI: https://gvectors.com/
  * Plugin URI: https://wpdiscuz.com/
@@ -295,8 +295,9 @@ class WpdiscuzCore implements WpDiscuzConstants {
 						}
 					}
 				}
-				$response["wc_all_comments_count_new"]      = esc_html(get_comments_number($postId));
-				$response["wc_all_comments_count_new_html"] = "<span class='wpdtc'>" . esc_html($response["wc_all_comments_count_new"]) . "</span> " . esc_html(1 == $response["wc_all_comments_count_new"] ? $this->form->getHeaderTextSingle() : $this->form->getHeaderTextPlural());
+				$response["wc_all_comments_count_new"]      = get_comments_number($postId);
+				$response["wc_all_comments_count_before_threads_html"] = "<span class='wpdtc' title='" . esc_attr($response["wc_all_comments_count_new"]) . "'>" . esc_html($this->helper->getNumber($response["wc_all_comments_count_new"])) . "</span> " . esc_html(1 == $response["wc_all_comments_count_new"] ? $this->form->getHeaderTextSingle() : $this->form->getHeaderTextPlural());
+				$response["wc_all_comments_count_bubble_html"] = "<span id='wpd-bubble-all-comments-count'" . ($response["wc_all_comments_count_new"] ? "" : " style='display:none;'") . " title='" . esc_attr($response["wc_all_comments_count_new"]) . "'>" . esc_html($this->helper->getNumber($response["wc_all_comments_count_new"])) . "</span>";
 				wp_send_json_success($response);
 			}
 		}
@@ -413,7 +414,7 @@ class WpdiscuzCore implements WpDiscuzConstants {
 					"comment_content"      => $comment_content,
 					"comment_author_url"   => $website_url,
 					"comment_agent"        => $wc_user_agent,
-					"comment_type"         => $stickyComment ? self::WPDISCUZ_STICKY_COMMENT : self::$DEFAULT_COMMENT_TYPE,
+					"comment_type"         => $wooExists ? "review" : ($stickyComment ? self::WPDISCUZ_STICKY_COMMENT : self::$DEFAULT_COMMENT_TYPE),
 				];
 
 				$new_comment_id = wp_new_comment(wp_slash($new_commentdata));
@@ -456,8 +457,9 @@ class WpdiscuzCore implements WpDiscuzConstants {
 				$response["is_main"]                        = $wooExists && !$replyForWoo ? 1 : ($comment_parent ? 0 : 1);
 				$response["held_moderate"]                  = $held_moderate;
 				$response["is_in_same_container"]           = $isInSameContainer;
-				$response["wc_all_comments_count_new"]      = esc_html(get_comments_number($postId));
-				$response["wc_all_comments_count_new_html"] = "<span class='wpdtc'>" . esc_html($response["wc_all_comments_count_new"]) . "</span> " . esc_html(1 == $response["wc_all_comments_count_new"] ? $form->getHeaderTextSingle() : $form->getHeaderTextPlural());
+				$response["wc_all_comments_count_new"]      = get_comments_number($postId);
+				$response["wc_all_comments_count_before_threads_html"] = "<span class='wpdtc' title='" . esc_attr($response["wc_all_comments_count_new"]) . "'>" . esc_html($this->helper->getNumber($response["wc_all_comments_count_new"])) . "</span> " . esc_html(1 == $response["wc_all_comments_count_new"] ? $form->getHeaderTextSingle() : $form->getHeaderTextPlural());
+				$response["wc_all_comments_count_bubble_html"] = "<span id='wpd-bubble-all-comments-count'" . ($response["wc_all_comments_count_new"] ? "" : " style='display:none;'") . " title='" . esc_attr($response["wc_all_comments_count_new"]) . "'>" . esc_html($this->helper->getNumber($response["wc_all_comments_count_new"])) . "</span>";
 
 				$commentListArgs                         = $this->getCommentListArgs($postId);
 				$commentListArgs["addComment"]           = $commentDepth;
@@ -1809,7 +1811,7 @@ class WpdiscuzCore implements WpDiscuzConstants {
 		if (comments_open($post->ID)) {
 			echo "<div id='wpd-bubble-wrapper'>";
 			$commentsNumber = get_comments_number($post->ID);
-			echo "<span id='wpd-bubble-all-comments-count'" . ($commentsNumber ? "" : " style='display:none;'") . ">" . esc_html($commentsNumber) . "</span>";
+			echo "<span id='wpd-bubble-all-comments-count'" . ($commentsNumber ? "" : " style='display:none;'") . " title='" . esc_attr($commentsNumber) . "'>" . esc_html($this->helper->getNumber($commentsNumber)) . "</span>";
 			echo "<div id='wpd-bubble-count'>";
 			echo "<svg xmlns='https://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path class='wpd-bubble-count-first' d='M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z'/><path class='wpd-bubble-count-second' d='M0 0h24v24H0z' /></svg>";
 			echo "<span class='wpd-new-comments-count'>0</span>";
@@ -2154,8 +2156,9 @@ class WpdiscuzCore implements WpDiscuzConstants {
 					$response["newCount"]                = esc_html(get_comments($args));
 					$response["new_comment_id"]          = $new_comment_id;
 					$response["notification"]            = esc_html($this->options->phrases["wc_feedback_comment_success"]);
-					$response["allCommentsCountNew"]     = esc_html(get_comments_number($inline_form->post_id));
-					$response["allCommentsCountNewHtml"] = "<span class='wpdtc'>" . esc_html($response["allCommentsCountNew"]) . "</span> " . esc_html(1 == $response["allCommentsCountNew"] ? $form->getHeaderTextSingle() : $form->getHeaderTextPlural());
+					$response["allCommentsCountNew"]     = get_comments_number($inline_form->post_id);
+					$response["allCommentsCountBeforeThreadsHtml"] = "<span class='wpdtc' title='" . esc_attr($response["allCommentsCountNew"]) . "'>" . esc_html($this->helper->getNumber($response["allCommentsCountNew"])) . "</span> " . esc_html(1 == $response["allCommentsCountNew"] ? $form->getHeaderTextSingle() : $form->getHeaderTextPlural());
+					$response["allCommentsCountBubbleHtml"] = "<span id='wpd-bubble-all-comments-count'" . ($response["allCommentsCountNew"] ? "" : " style='display:none;'") . " title='" . esc_attr($response["allCommentsCountNew"]) . "'>" . esc_html($this->helper->getNumber($response["allCommentsCountNew"])) . "</span>";
 					do_action("wpdiscuz_clean_post_cache", $inline_form->post_id, "inline_comment_posted");
 					wp_send_json_success($response);
 				} else {

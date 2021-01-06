@@ -632,8 +632,8 @@ class WP_Notes_Admin {
      * class.
      */
     if ('settings_page_wp-notes-widget-settings' == $hook || 'post.php' == $hook || 'post-new.php' == $hook ) {
-      wp_enqueue_style( 'wp-notes-bootstrap-theme-css', plugin_dir_url( __FILE__ ) . 'css/wp-ace-bootstrap-theme.css', array(), $this->version, 'all' );
-      wp_enqueue_style( 'wp-notes-bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/wp-ace-bootstrap.css', array(), $this->version, 'all' );
+      //wp_enqueue_style( 'wp-notes-bootstrap-theme-css', plugin_dir_url( __FILE__ ) . 'css/wp-ace-bootstrap-theme.css', array(), $this->version, 'all' );
+      wp_enqueue_style( 'wp-notes-bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap-4.5.3.css', array(), $this->version, 'all' );
       wp_enqueue_style( 'wp-notes-fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0', 'all' );
     }
 
@@ -687,12 +687,12 @@ class WP_Notes_Admin {
       wp_enqueue_script( 'wpnw-admin-widget', plugin_dir_url( __FILE__ ) . 'js/wp-notes-widget-admin.js', array( 'jquery' ), $this->version, false );
     } elseif ('settings_page_wp-notes-widget-settings' == $hook ) {
       wp_enqueue_script('jquery');
-      wp_enqueue_script( 'wp-notes-bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false ); 
+      wp_enqueue_script( 'wp-notes-bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap-4.5.3.bundle.min.js', array( 'jquery' ), $this->version, false );
       wp_enqueue_script( 'wp-notes-settings-js', plugin_dir_url( __FILE__ ) . 'js/wp-notes-settings-admin.js', array( 'jquery' ), filemtime(plugin_dir_path( __FILE__ ) . 'js/wp-notes-settings-admin.js'), false ); 
     } elseif (('post.php' == $hook && isset($_GET['post'])) || 'post-new.php' == $hook ) {
       wp_enqueue_script( 'wp-notes-sc-editor', plugin_dir_url( __FILE__ ) . 'js/shortcode-editor.js', array( 'jquery' ), filemtime(plugin_dir_path( __FILE__ ) . 'js/shortcode-editor.js'), false );
       wp_enqueue_script('jquery');
-      wp_enqueue_script( 'wp-ace-bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );  
+      wp_enqueue_script( 'wp-ace-bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap-4.5.3.bundle.min.js', array( 'jquery' ), $this->version, false );
     }
 
   }

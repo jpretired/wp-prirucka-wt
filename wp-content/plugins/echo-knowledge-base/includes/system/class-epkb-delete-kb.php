@@ -29,7 +29,7 @@ class EPKB_Delete_KB {
 
 				<div class="epkb-admin-info-box__header">
 					<div class="epkb-admin-info-box__header__icon epkbfa epkbfa-trash"></div>
-					<div class="epkb-admin-info-box__header__title">Delete Data</div>
+					<div class="epkb-admin-info-box__header__title"><?php echo __( 'Delete Data', 'echo-knowledge-base' ); ?></div>
 				</div>
 
 				<div class="epkb-admin-info-box__body">
@@ -41,7 +41,7 @@ class EPKB_Delete_KB {
 									'value' => '',
 									'name'    => 'delete_text',
 								) );
-								echo '<div class="config-input-group epkb-other-info-item">' . sprintf( __( 'Write "%s" in the above input box if you want to delete ALL KB data including KB Articles, KB Categories, KB Tags and KB options. All add-ons data and custom tables will also be removed.', 'echo-knowledge-base' ), 'delete' ) . '</div>';
+								echo '<div class="config-input-group epkb-other-info-item">' . sprintf( __( 'Write "%s" in the above input box if you want to delete ALL KB data including KB Articles, KB Categories, KB Tags and KB options. All add-ons data and custom tables will also be removed when you uinstall the plugin.', 'echo-knowledge-base' ), 'delete' ) . '</div>';
 								$form->submit_button( __('Delete All', 'echo-knowledge-base'), 'epkb_delete_all', 'epkb_delete_all epkb-aibb-btn epkb-aibb-btn--red' ); ?>
 							</form>
 						</section>

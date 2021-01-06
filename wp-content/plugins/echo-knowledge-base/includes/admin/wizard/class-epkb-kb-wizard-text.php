@@ -291,6 +291,12 @@ class EPKB_KB_Wizard_Text {
 				'2' => $form->text( $feature_specs['search_button_name'] + array(
 						'value'             => $kb_config['search_button_name'],
 						'input_group_class' => 'eckb-wizard-single-text',
+						'data' => array(
+							'wizard_input' => '1',
+							'target_selector' => '#epkb-search-kb',
+							'target_attr' => 'value',
+							'text' => '1',
+						)
 					) ),
 				'3' => $form->text( $feature_specs['search_results_msg'] + array(
 						'value'             => $kb_config['search_results_msg'],
@@ -441,6 +447,13 @@ class EPKB_KB_Wizard_Text {
 		$form->option_group_wizard( $feature_specs, array(
 			'option-heading'    => __('Article Meta', 'echo-knowledge-base'),
 			'class'             => 'eckb-wizard-texts eckb-wizard-accordion__body',
+			'depends'        => array(
+				'show_when' => array(
+					'last_udpated_on' => 'article_top|article_bottom', // OR
+					'created_on' => 'article_top|article_bottom', // OR
+					'author_mode' => 'article_top|article_bottom',
+				)
+			),
 			'inputs'            => array (
 				'0' => $form->text( $feature_specs['last_udpated_on_text'] + array(
 						'value'             => $kb_config['last_udpated_on_text'],
@@ -499,6 +512,33 @@ class EPKB_KB_Wizard_Text {
 		));
 
 		do_action( 'epkb_text_wizard_after_article_page_texts', $kb_id );
+		
+		if ( ! EPKB_Utilities::is_article_rating_enabled() || ! isset($eprf_specs['rating_stars_text']) ) {
+			return;
+		}
+		
+		$form = new EPRF_KB_Config_Elements();
+		
+		$eprf_specs = EPRF_KB_Config_Specs::get_fields_specification();
+		$eprf_config = eprf_get_instance()->kb_config_obj->get_kb_config( $kb_id );
+		
+		// Fix for EPRF
+		$form->option_group_wizard( $eprf_specs, array(
+			'option-heading'    => 'Rating: Other',
+			'class'             => 'eckb-wizard-texts eckb-wizard-accordion__body',
+			'inputs'            => array(
+				'0' => $form->text( $eprf_specs['rating_stars_text'] + array(
+						'value'             => $eprf_config['rating_stars_text'],
+						'input_group_class' => 'eckb-wizard-single-text',
+						'data' => array()
+					) ),
+				'1' => $form->text( $eprf_specs['rating_out_of_stars_text'] + array(
+						'value'             => $eprf_config['rating_out_of_stars_text'],
+						'input_group_class' => 'eckb-wizard-single-text',
+						'data' => array()
+					) ),
+			)
+		));
 	}
 	
 	/**
@@ -636,6 +676,8 @@ class EPKB_KB_Wizard_Text {
 		'rating_feedback_support_link_text',
 		'rating_feedback_support_link_url',
 		'rating_feedback_button_text',
+		'rating_stars_text',
+		'rating_out_of_stars_text',
 
 		// CATEGORIES
 		'category_empty_msg',

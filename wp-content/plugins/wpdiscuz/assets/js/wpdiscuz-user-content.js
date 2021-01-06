@@ -3,11 +3,11 @@ jQuery(document).ready(function ($) {
     var refreshAfterDeleting = 0;
     var isNativeAjaxEnabled = parseInt(wpdiscuzAjaxObj.isNativeAjaxEnabled);
     var additionalTab = parseInt(wpdiscuzUCObj.additionalTab);
-    $(document).delegate('.wpd-info,.wpd-page-link,.wpd-delete-content,.wpd-user-email-delete-links', 'click', function (e) {
+    $(document).on('click', '.wpd-info,.wpd-page-link,.wpd-delete-content,.wpd-user-email-delete-links', function (e) {
         e.preventDefault();
     });
 
-    $(document).delegate('.wpd-info.wpd-not-clicked', 'click', function (e) {
+    $(document).on('click', '.wpd-info.wpd-not-clicked', function (e) {
         var btn = $(this);
         btn.removeClass('wpd-not-clicked');
         var data = new FormData();
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
                 });
     }
 
-    $(document).delegate('.wpd-list-item', 'click', function () {
+    $(document).on('click', '.wpd-list-item', function () {
         var relValue = $('input.wpd-rel', this).val();
         $('#wpdUserContentInfo .wpd-list-item').removeClass('wpd-active');
         $('#wpdUserContentInfo .wpd-content-item').removeClass('wpd-active');
@@ -65,7 +65,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $(document).delegate('.wpd-page-link.wpd-not-clicked', 'click', function (e) {
+    $(document).on('click', '.wpd-page-link.wpd-not-clicked', function (e) {
         var btn = $(this);
         btn.removeClass('wpd-not-clicked');
         var goToPage = btn.data('wpd-page');
@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
                 });
     });
 
-    $(document).delegate('.wpd-delete-content.wpd-not-clicked', 'click', function () {
+    $(document).on('click', '.wpd-delete-content.wpd-not-clicked', function () {
 
         var btn = $(this);
         var id = parseInt(btn.data('wpd-content-id'));
@@ -122,7 +122,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).delegate('[data-lity-close]', 'click', function (e) {
+    $(document).on('click', '[data-lity-close]', function (e) {
         if ($(e.target).is('[data-lity-close]')) {
             if (refreshAfterDeleting) {
                 window.location.reload(true);
@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).delegate('.wpd-user-email-delete-links.wpd-not-clicked', 'click', function () {
+    $(document).on('click', '.wpd-user-email-delete-links.wpd-not-clicked', function () {
         var btn = $(this);
         btn.removeClass('wpd-not-clicked');
         $('.wpd-loading', btn).addClass('wpd-show');
@@ -143,11 +143,10 @@ jQuery(document).ready(function ($) {
                 });
     });
 
-    $(document).delegate('.wpd-user-settings-button.wpd-not-clicked', 'click', function () {
+    $(document).on('click', '.wpd-user-settings-button.wpd-not-clicked', function () {
         var btn = $(this);
         btn.removeClass('wpd-not-clicked');
         var guestAction = btn.data('wpd-delete-action');
-        console.log(guestAction);
         if (guestAction !== 'deleteCookies') {
             btn.find('.wpd-loading').addClass('wpd-show');
             var data = new FormData();

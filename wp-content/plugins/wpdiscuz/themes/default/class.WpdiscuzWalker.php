@@ -193,9 +193,11 @@ class WpdiscuzWalker extends Walker_Comment implements WpDiscuzConstants {
             $search[] = "{DATE_WRAPPER_CLASSES}";
             $search[] = "{DATE_ICON}";
             $search[] = "{DATE}";
+            $search[] = "{POSTED_DATE}";
             $replace[] = "wpd-comment-date";
             $replace[] = "<i class='far fa-clock' aria-hidden='true'></i>";
             $replace[] = esc_html($this->options->general["simpleCommentDate"] ? get_comment_date($this->options->wp["dateFormat"] . " " . $this->options->wp["timeFormat"], $comment->comment_ID) : $this->helper->dateDiff($comment->comment_date_gmt));
+            $replace[] = esc_html(get_comment_date($this->options->wp["dateFormat"] . " " . $this->options->wp["timeFormat"], $comment->comment_ID));
             $showDate = true;
         }
 
@@ -382,15 +384,15 @@ class WpdiscuzWalker extends Walker_Comment implements WpDiscuzConstants {
             if ($this->options->thread_layouts["votingButtonsStyle"]) {
                 $voteCount = isset($commentMetas[self::META_KEY_VOTES_SEPARATE]) ? unserialize($commentMetas[self::META_KEY_VOTES_SEPARATE][0]) : ["like" => 0, "dislike" => 0];
                 $like = !empty($voteCount["like"]) ? intval($voteCount["like"]) : 0;
-                $voteResult = "<div class='wpd-vote-result wpd-vote-result-like" . ($like ? " wpd-up" : "") . "'>" . esc_html($like) . "</div>";
+                $voteResult = "<div class='wpd-vote-result wpd-vote-result-like" . ($like ? " wpd-up" : "") . "' title='" . esc_attr($like) . "'>" . esc_html($this->helper->getNumber($like)) . "</div>";
                 if ($this->options->thread_layouts["enableDislikeButton"]) {
-                    $dislike = !empty($voteCount["dislike"]) ? -$voteCount["dislike"] : 0;
+                    $dislike = !empty($voteCount["dislike"]) ? intval($voteCount["dislike"]) : 0;
                     $voteResult .= "<div class='wpd-vote-result-sep'></div>";
-                    $voteResult .= "<div class='wpd-vote-result wpd-vote-result-dislike" . ($dislike ? " wpd-down" : "") . "'>" . esc_html($dislike) . "</div>";
+                    $voteResult .= "<div class='wpd-vote-result wpd-vote-result-dislike" . ($dislike ? " wpd-down" : "") . "' title='" . esc_attr(-$dislike) . "'>" . esc_html($this->helper->getNumber(-$dislike)) . "</div>";
                 }
             } else {
                 $votes = isset($commentMetas[self::META_KEY_VOTES]) ? intval($commentMetas[self::META_KEY_VOTES][0]) : 0;
-                $voteResult = "<div class='wpd-vote-result" . ($votes > 0 ? " wpd-up" : ($votes < 0 ? " wpd-down" : "")) . "'>" . esc_html($votes) . "</div>";
+                $voteResult = "<div class='wpd-vote-result" . ($votes > 0 ? " wpd-up" : ($votes < 0 ? " wpd-down" : "")) . "' title='" . esc_attr($votes) . "'>" . esc_html($this->helper->getNumber($votes)) . "</div>";
             }
             $wpdUpClass = "";
             $wpdDownClass = "";

@@ -20,12 +20,12 @@ class EPKB_Settings_Controller {
 
 		// verify that request is authentic
 		if ( ! isset( $_REQUEST['_wpnonce_epkb_toggle_debug'] ) || !wp_verify_nonce( $_REQUEST['_wpnonce_epkb_toggle_debug'], '_wpnonce_epkb_toggle_debug' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Refresh your page', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'Refresh your page', 'echo-knowledge-base' ) . ' (152)' );
 		}
 
 		// ensure user has correct permissions
 		if ( ! current_user_can( 'manage_options' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission.', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission.', 'echo-knowledge-base' ) . ' (153)' );
 		}
 
 		$is_debug_on = EPKB_Utilities::get_wp_option( EPKB_Settings_Controller::EPKB_DEBUG, false );
@@ -49,12 +49,12 @@ class EPKB_Settings_Controller {
 
 		// verify that the request is authentic
 		if ( ! isset( $_REQUEST['_wpnonce_epkb_download_debug_info'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce_epkb_download_debug_info'], '_wpnonce_epkb_download_debug_info' ) ) {
-			EPKB_Utilities::ajax_show_error_die(__( 'Debug not loaded. First refresh your page', 'echo-knowledge-base' ));
+			EPKB_Utilities::ajax_show_error_die(__( 'Debug not loaded. First refresh your page', 'echo-knowledge-base' ) . ' (154)');
 		}
 
 		// ensure user has correct permissions - only admin can download info
 		if ( ! current_user_can( 'manage_options' ) ) {
-			EPKB_Utilities::ajax_show_error_die(__( 'You do not have permission to access this page', 'echo-knowledge-base' ));
+			EPKB_Utilities::ajax_show_error_die(__( 'You do not have permission to access this page', 'echo-knowledge-base' ) . ' (155)');
 		}
 
 		EPKB_Utilities::save_wp_option( EPKB_Settings_Controller::EPKB_DEBUG, false, true);
@@ -71,6 +71,6 @@ class EPKB_Settings_Controller {
 	}
 
 	public function user_not_logged_in() {
-		EPKB_Utilities::ajax_show_error_die( '<p>' . __( 'You are not logged in. Refresh your page and log in.', 'echo-knowledge-base' ) . '</p>', __( 'Cannot save your changes', 'echo-knowledge-base' ) );
+		EPKB_Utilities::ajax_show_error_die( '<p>' . __( 'You are not logged in. Refresh your page and log in.', 'echo-knowledge-base' ) . '</p>', __( 'Cannot save your changes', 'echo-knowledge-base' ) . ' (156)' );
 	}
 }

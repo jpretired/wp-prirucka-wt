@@ -146,7 +146,6 @@ class WpdiscuzDBManager implements WpDiscuzConstants {
             $inlineType = " INNER JOIN `{$this->db->commentmeta}` AS `cmi` ON `c`.`comment_ID` = `cmi`.`comment_id` AND `cmi`.`meta_key` = '" . self::META_KEY_FEEDBACK_FORM_ID . "'";
         }
         if ($args["post_id"]) {
-            $approved = "";
             if ($args["status"] === "all") {
                 $approved = " AND `c`.`comment_approved` IN('1','0')";
             } else {
@@ -171,11 +170,25 @@ class WpdiscuzDBManager implements WpDiscuzConstants {
         }
         $visible = "";
         if ($visibleCommentIds) {
-            $visible = " AND `comment_ID` NOT IN(" . rtrim($visibleCommentIds, ",") . ")";
+            $visible = " AND `comment_ID` NOT IN(" . $visibleCommentIds . ")";
         }
         $sqlCommentIds = $this->db->prepare("SELECT `comment_ID` FROM `{$this->db->comments}` WHERE `comment_post_ID` = %d AND `comment_ID` > %d AND `comment_author_email` != %s" . $approved . $visible . " ORDER BY `{$wpdiscuz->options->thread_display["orderCommentsBy"]}` ASC;", $args["post_id"], $loadLastCommentId, $email);
         return $this->db->get_col($sqlCommentIds);
     }
+
+	/**
+	 * check comment availability
+	 */
+	public function commentIDsToRemove($args, $visibleCommentIds) {
+		if ($args["status"] === "all") {
+			$approved = " AND `comment_approved` IN('1','0')";
+		} else {
+			$approved = " AND `comment_approved` = '1'";
+		}
+		$sqlCommentIds = "SELECT `comment_ID` FROM `{$this->db->comments}` WHERE `comment_ID` IN(" . $visibleCommentIds . ")" . $approved . ";";
+		$notRemovedCommentIDs = $this->db->get_col($sqlCommentIds);
+		return array_values(array_diff(explode(",", $visibleCommentIds), $notRemovedCommentIDs));
+	}
 
     /**
      * @param type $visibleCommentIds comment ids which is visible at the moment on front end

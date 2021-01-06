@@ -369,24 +369,24 @@ class EPKB_KB_Setup_Wizard {
 
 		// verify that request is authentic
 		if ( empty( $_REQUEST['_wpnonce_apply_wizard_changes'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce_apply_wizard_changes'], '_wpnonce_apply_wizard_changes' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (157)' );
 		}
 
 		// ensure that user has correct permissions
 		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) );
+			EPKB_Utilities::ajax_show_error_die( __( 'You do not have permission to edit this knowledge base', 'echo-knowledge-base' ) . ' (158)' );
 		}
 
 		// get current KB ID
 		$wizard_kb_id = EPKB_Utilities::post('epkb_wizard_kb_id');
 		if ( empty($wizard_kb_id) || ! EPKB_Utilities::is_positive_int( $wizard_kb_id ) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (2)' );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (159)' );
 		}
 
 		// get selected Theme Name
 		$theme_name = EPKB_Utilities::post('theme_name');
 		if ( empty($theme_name) ) {
-			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (22)' );
+			EPKB_Utilities::ajax_show_error_die( __( 'Invalid parameter. Please refresh your page', 'echo-knowledge-base' ) . ' (160)' );
 		}
 
 		// get current KB configuration

@@ -238,32 +238,63 @@ class EPKB_Config_Menu {
 	   <!--  FRONTEND EDITOR BUTTON -->
 		<div class="epkb-wizards epkb-config-content-wrapper" id="epkb-config-editor-content" style="display: none;">
 			<section class="epkb-wizards__row-3-col">				<?php
-				self::display_wizard_box( array(
-				  'icon_class'    => 'epkbfa-paint-brush',
-				  'title'         => __( 'Edit Main Page', 'echo-knowledge-base' ),
-				  'content'       => __( 'Using Frontend Editor', 'echo-knowledge-base' ),
-				  'btn_text'      => __( 'Edit', 'echo-knowledge-base' ),
-				  'btn_url'       =>  $editor_urls['main_page_url'],
-				  'btn_target'	  => "_blank"
-				));
 
-				self::display_wizard_box( array(
-				  'icon_class'    => 'epkbfa-font',
-				  'title'         => __( 'Edit Article Page', 'echo-knowledge-base' ),
-				  'content'       => __( 'Using Frontend Editor', 'echo-knowledge-base' ),
-				  'btn_text'      => __( 'Edit', 'echo-knowledge-base' ),
-				  'btn_url'       => $editor_urls['article_page_url'],
-				  'btn_target'	  => "_blank"
-				));
+				if ( $editor_urls['main_page_url'] != '' ) {
+					self::display_wizard_box(array(
+						'icon_img_url'  => 'img/editor/basic-layout-light.jpg',
+						'title' => __('Main Page', 'echo-knowledge-base'),
+						'btn_text' => __('Edit', 'echo-knowledge-base'),
+						'btn_url' => $editor_urls['main_page_url'],
+						'btn_target' => "_blank"
+					));
+				} else {
+					self::display_wizard_box( array(
+					   'icon_img_url'  => 'img/editor/basic-layout-light.jpg',
+						'title'         => __( 'Main Page', 'echo-knowledge-base' ),
+						'content'       => __( 'No Main Page Found', 'echo-knowledge-base' ),
+						'btn_text'      => __( 'Add Shortcode', 'echo-knowledge-base' ),
+						'btn_url'       => admin_url("edit.php?post_type=" . EPKB_KB_Handler::get_post_type( $kb_config['id'] ) . "&page=epkb-kb-configuration&wizard-global"),
+						'btn_target'	  => "_blank"
+					));
+				}
 
-				self::display_wizard_box( array(
-					'icon_class'    => 'epkbfa-cog',
-					'title'         => __( 'Edit Archive Page', 'echo-knowledge-base' ),
-					'content'       => __( 'Using Frontend Editor', 'echo-knowledge-base' ),
-					'btn_text'      => __( 'Edit', 'echo-knowledge-base' ),
-					'btn_url'       => $editor_urls['archive_url'],
-					'btn_target'	  => "_blank"
-				));				?>
+				if ( $editor_urls['article_page_url'] != '' ) {
+					self::display_wizard_box( array(
+						'icon_img_url'  => 'img/editor/article-page.jpg',
+						'title'         => __( 'Article Page', 'echo-knowledge-base' ),
+						'btn_text'      => __( 'Edit', 'echo-knowledge-base' ),
+						'btn_url'       => $editor_urls['article_page_url'],
+						'btn_target'	  => "_blank"
+					));
+				} else {
+					self::display_wizard_box( array(
+					   'icon_img_url'  => 'img/editor/article-page.jpg',
+						'title'         => __( 'Article Page', 'echo-knowledge-base' ),
+						'content'       => __( 'No Articles Found', 'echo-knowledge-base' ),
+						'btn_text'      => __( 'Add New Article', 'echo-knowledge-base' ),
+						'btn_url'       => admin_url("post-new.php?post_type=" . EPKB_KB_Handler::get_post_type( $kb_config['id'] )),
+						'btn_target'	  => "_blank"
+					));
+				}
+
+				if ( $editor_urls['archive_url'] != '' ) {
+					self::display_wizard_box(array(
+						'icon_img_url'  => 'img/editor/category-archive-page.jpg',
+						'title' => __('Archive Page', 'echo-knowledge-base'),
+						'btn_text' => __('Edit', 'echo-knowledge-base'),
+						'btn_url' => $editor_urls['archive_url'],
+						'btn_target' => "_blank"
+					));
+				} else {
+					self::display_wizard_box(array(
+					   'icon_img_url'  => 'img/editor/category-archive-page.jpg',
+						'title' => __('Archive Page', 'echo-knowledge-base'),
+						'content' => __('No Categories Found', 'echo-knowledge-base'),
+						'btn_text' => __('Add New Category', 'echo-knowledge-base'),
+						'btn_url' => admin_url('edit-tags.php?taxonomy=' . EPKB_KB_Handler::get_category_taxonomy_name( $kb_config['id'] ) .'&post_type=' . EPKB_KB_Handler::get_post_type( $kb_config['id'] )),
+						'btn_target' => "_blank"
+					));
+				}	?>
 			</section>
 		</div>
 
@@ -321,14 +352,24 @@ class EPKB_Config_Menu {
 
 			 <!-- Header -------------------->
 			 <div class="epkb-wizard-box__header">
-				 <i class="epkb-wizard-box__header__icon epkbfa <?php echo $args['icon_class']; ?>"></i>
 				 <h3 class="epkb-wizard-box__header__title"><?php echo $args['title']; ?></h3>
+
+				 <?php if ( isset( $args['icon_class'] ) ) { ?>
+					 <i class="epkb-wizard-box__header__icon epkbfa <?php echo $args['icon_class']; ?>"></i>
+				 <?php } elseif ( isset($args['icon_img_url'] ) ) { ?>
+					 <span class="epkb-wizard-box__header__img">
+						 <img src="<?php echo Echo_Knowledge_Base::$plugin_url.''.$args['icon_img_url']; ?>">
+					 </span>
+				<?php  }				 ?>
+
 			 </div>
 
 			 <!-- Body ---------------------->
+			<?php if ( isset( $args['content'] ) ) { ?>
 			 <div class="epkb-wizard-box__body">
-			  <?php echo $args['content']; ?>
+			  <?php echo empty($args['content']) ? '' : $args['content']; ?>
 			 </div>
+			<?php  } ?>
 
 			 <!-- Footer ---------------------->
 			 <div class="epkb-wizard-box__footer">

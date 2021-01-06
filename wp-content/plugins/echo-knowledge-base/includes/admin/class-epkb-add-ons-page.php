@@ -91,15 +91,6 @@ class EPKB_Add_Ons_Page {
 
 						self::add_on_product( array(
 							'id'                => '',
-							'title'             => __( 'KB Articles Import', 'echo-knowledge-base' ),
-							'special_note'      => __( 'Import Articles and Categoies', 'echo-knowledge-base' ),
-							'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/edd/2020/08/KB-Import-Export-Banner.jpg',
-							'desc'              => sprintf( __( 'Import articles and categories into your knowledge base from CSV file. Migrate and move your articles from another KB.', 'echo-knowledge-base' ), $i18_grid, $i18_sidebar ),
-							'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export//?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=kb-import-export/',
-						) );
-
-						self::add_on_product( array(
-							'id'                => '',
 							'title'             => __( 'Elegant Layouts', 'echo-knowledge-base' ),
 							'special_note'      => __( 'More ways to design your KB', 'echo-knowledge-base' ),
 							'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-EL'.'AY-1.1.jpg',
@@ -166,7 +157,16 @@ class EPKB_Add_Ons_Page {
 							'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/2020/07/featured-image-LINK-2.jpg',
 							'desc'              => sprintf( __( 'Set Articles to links to %s. On KB Main Page, choose icons for your articles.', 'echo-knowledge-base' ), $i18_objects ),
 							'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/links-editor-for-pdfs-and-more/?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=links-editor'
-						) );    ?>
+						) );
+
+					   self::add_on_product( array(
+						   'id'                => '',
+						   'title'             => __( 'KB Articles Import', 'echo-knowledge-base' ),
+						   'special_note'      => __( 'Import Articles and Categoies', 'echo-knowledge-base' ),
+						   'img'               => 'https://www.echoknowledgebase.com/wp-content/uploads/edd/2020/08/KB-Import-Export-Banner.jpg',
+						   'desc'              => sprintf( __( 'Import articles and categories into your knowledge base from CSV file. Migrate and move your articles from another KB.', 'echo-knowledge-base' ), $i18_grid, $i18_sidebar ),
+						   'learn_more_url'    => 'https://www.echoknowledgebase.com/wordpress-plugin/kb-import-export//?utm_source=plugin&utm_medium=addons&utm_content=home&utm_campaign=kb-import-export/',
+					   ) );  ?>
 
 					</div>
 				</div>

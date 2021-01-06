@@ -14,7 +14,7 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 		$this->options     = $options;
 		$this->dbManager   = $dbManager;
 		$this->helperEmail = $helperEmail;
-		add_action("deleted_comment", [&$this, "cleanCommentRelatedRows"]);
+		add_action("deleted_comment", [&$this, "cleanCommentRelatedRows"], 10, 2);
 		add_action("delete_user", [&$this, "deleteUserRelatedData"], 11, 2);
 		add_action("profile_update", [&$this, "onProfileUpdate"], 10, 2);
 		add_action("admin_post_removeVoteData", [&$this, "removeVoteData"]);
@@ -137,9 +137,10 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 		}
 	}
 
-	public function cleanCommentRelatedRows($commentId) {
+	public function cleanCommentRelatedRows($commentId, $comment) {
 		$this->dbManager->deleteSubscriptions($commentId);
 		$this->dbManager->deleteVotes($commentId);
+		$this->cleanPostCache($comment->comment_post_ID);
 	}
 
 	public function onProfileUpdate($userId, $oldUser) {

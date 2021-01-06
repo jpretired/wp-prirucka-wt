@@ -330,9 +330,12 @@ class EPKB_Editor_Main_Page_Config extends EPKB_Editor_Base_Config {
 			],
 			'section_border_radius' => [
 				'editor_tab' => self::EDITOR_TAB_STYLE,
-				'target_selector' => '.epkb-top-category-box',
-				'style_name' => 'border-radius',
 				'postfix' => 'px',
+				'styles' => [
+					'.epkb-top-category-box' => 'border-radius',
+					'.section-head' => 'border-top-right-radius',
+					'.section-head ' => 'border-top-left-radius', // space is important to have different keys in array
+				]
 			],
 			'section_border_width' => [
 				'editor_tab' => self::EDITOR_TAB_STYLE,
@@ -727,8 +730,6 @@ class EPKB_Editor_Main_Page_Config extends EPKB_Editor_Base_Config {
 		
 		$editor_config = [];
 
-		$editor_config += self::page_zone();
-
 		// Advanced Search has its own search box settings so exclude the KB core ones
 		if ( ! $this->is_asea ) {
 			$editor_config += self::search_box_zone();
@@ -752,6 +753,20 @@ class EPKB_Editor_Main_Page_Config extends EPKB_Editor_Base_Config {
 			$unset_settings = array_merge($unset_settings,[
 				'templates_display_main_page_main_title',
 			]);
+		}
+
+		// Sidebar uses article page zone otherwise use Main Page page zone
+		if ( $this->is_sidebar_main_page ) {
+			$editor_config += EPKB_Editor_Article_Page_Config::page_zone();
+			$unset_settings = array_merge($unset_settings,[
+				'width',
+				'kb_article_page_layout',
+				'templates_for_kb_article_padding_group',
+				'templates_for_kb_article_margin_group',
+			]);
+
+		} else {
+			$editor_config += self::page_zone();
 		}
 
 		return self::get_editor_config( $kb_config, $editor_config, $unset_settings, 'main-page' );

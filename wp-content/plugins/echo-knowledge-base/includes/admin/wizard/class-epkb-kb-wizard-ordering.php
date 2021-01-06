@@ -168,14 +168,12 @@ class EPKB_KB_Wizard_Ordering {
 				</button>
 				<button value="apply" id="epkb-wizard-button-apply" class="epkb-wizard-button epkb-wizard-button-apply"  data-wizard-type="ordering"><?php _e( 'Apply', 'echo-knowledge-base' ); ?></button>
 
-				<a href="<?php echo esc_url( admin_url('edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&epkb-wizard-tab' ) ); ?>&page=epkb-kb-configuration" class="epkb-wizard-button epkb-wizard-button__exit" >
-						<?php _e( 'Exit', 'echo-knowledge-base' ); ?>
-				</a>
-
-
 				<input type="hidden" id="_wpnonce_apply_wizard_changes" name="_wpnonce_apply_wizard_changes" value="<?php echo wp_create_nonce( "_wpnonce_apply_wizard_changes" ); ?>">
 			</div>
 			<div class="epkb-wizard-link epkb-wizard-button-container__support-wizard">
+				<a href="<?php echo esc_url( admin_url('edit.php?post_type=' . EPKB_KB_Handler::get_post_type( $this->kb_config['id'] ) . '&epkb-wizard-tab' ) ); ?>&page=epkb-kb-configuration" class="epkb-wizard-button epkb-wizard-button__exit" >
+					<?php _e( 'Exit', 'echo-knowledge-base' ); ?>
+				</a>
 				<a href="https://www.echoknowledgebase.com/technical-support/" target="_blank">
 					<?php _e( 'Support', 'echo-knowledge-base' ); ?>
 					<span class="epkbfa epkbfa-external-link"></span>

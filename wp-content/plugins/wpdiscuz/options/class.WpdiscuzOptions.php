@@ -60,13 +60,11 @@ class WpdiscuzOptions implements WpDiscuzConstants {
 		$this->wp["threadCommentsDepth"] = get_option("thread_comments_depth");
 		$this->wp["isPaginate"]          = get_option("page_comments");
 		$wordpressCommentOrder           = strtolower(get_option("comment_order"));
-		$this->wp["commentOrder"]        = in_array($wordpressCommentOrder, [
-			"asc",
-			"desc",
-		]) ? $wordpressCommentOrder : "desc";
+		$this->wp["commentOrder"]        = in_array($wordpressCommentOrder, ["asc", "desc",]) ? $wordpressCommentOrder : "desc";
 		$this->wp["commentPerPage"]      = get_option("comments_per_page");
 		$this->wp["showAvatars"]         = get_option("show_avatars");
 		$this->wp["defaultCommentsPage"] = get_option("default_comments_page");
+		$this->general["humanReadableNumbers"] = apply_filters("wpdiscuz_enable_human_readable_numbers", true);
 		$this->isFileFunctionsExists     = function_exists("file_get_contents") && function_exists("file_put_contents");
 		$this->initFormRelations();
 		$this->initGoodbyeCaptchaField();
@@ -366,7 +364,7 @@ class WpdiscuzOptions implements WpDiscuzConstants {
 			"wc_confirm_email"                                  => esc_html__("Confirm your subscription", "wpdiscuz"),
 			"wc_comfirm_success_message"                        => esc_html__("You've successfully confirmed your subscription.", "wpdiscuz"),
 			"wc_confirm_email_subject"                          => esc_html__("Subscription Confirmation", "wpdiscuz"),
-			"wc_confirm_email_message"                          => __("Hi, <br/> You just subscribed for new comments on our website. This means you will receive an email when new comments are posted according to subscription option you've chosen. <br/> To activate, click confirm below. If you believe this is an error, ignore this message and we'll never bother you again. <br/><br/><a href='[POST_URL]'>[POST_TITLE]</a><br/><br/><a href='[CONFIRM_URL]'>Confirm Your Subscrption</a><br/><br/><a href='[CANCEL_URL]'>Cancel Subscription</a>", "wpdiscuz"),
+			"wc_confirm_email_message"                          => __("Hi, <br/> You just subscribed for new comments on our website. This means you will receive an email when new comments are posted according to subscription option you've chosen. <br/> To activate, click confirm below. If you believe this is an error, ignore this message and we'll never bother you again. <br/><br/><a href='[POST_URL]'>[POST_TITLE]</a><br/><br/><a href='[CONFIRM_URL]'>Confirm Your Subscription</a><br/><br/><a href='[CANCEL_URL]'>Cancel Subscription</a>", "wpdiscuz"),
 			"wc_error_empty_text"                               => esc_html__("please fill out this field to comment", "wpdiscuz"),
 			"wc_error_email_text"                               => esc_html__("email address is invalid", "wpdiscuz"),
 			"wc_error_url_text"                                 => esc_html__("url is invalid", "wpdiscuz"),
@@ -3049,12 +3047,8 @@ class WpdiscuzOptions implements WpDiscuzConstants {
 		$deactivatePlugins = [];
 		$adminNotices      = [];
 		foreach ($plugins as $key => $value) {
-			$secret   = get_option("gvt_product_secret_" . $key, "");
 			$redpoint = (int) get_option("gvt_product_" . $key . "_redpoint", "1");
-			if (is_null($value["instance"]) || $redpoint) {
-				$adminNotices[$key . "_redpoint"] =  sprintf(__("Something wrong with %s addon license and files. If this addon has not been purchased and downloaded from the official gVectors.com website it's probably hacked and may lead lots of security issues.", "wpdiscuz"), $value["name"]);
-			}
-			if ($secret && !$redpoint) {
+			if (!$redpoint) {
 				$checkedData[$key] = [
 					"last_checked"  => $this->getLastCheckedDate(),
 					"checked_count" => 0,
@@ -3070,7 +3064,7 @@ class WpdiscuzOptions implements WpDiscuzConstants {
 							"checked_count" => $checkedData[$key]["checked_count"] + 1,
 							"valid"         => 0,
 						];
-						$adminNotices[$key]  = $value["name"] . __(" addon was deactivated, because your license isn't valid.", "wpdiscuz");
+						$adminNotices[$key]  = sprintf(__("%s addon was deactivated, because your license isn't valid.", "wpdiscuz"), $value["name"]);
 					}
 				} else if ($diff->m >= 1) {
 					$deactivatePlugins[] = $value["file"];
@@ -3079,7 +3073,10 @@ class WpdiscuzOptions implements WpDiscuzConstants {
 						"checked_count" => $checkedData[$key]["checked_count"] + 1,
 						"valid"         => 0,
 					];
-					$adminNotices[$key]  = $value["name"] . __(" addon was deactivated, because your license isn't valid.", "wpdiscuz");
+					if (is_null($value["instance"]) || $redpoint) {
+						$adminNotices[$key . "_redpoint"] =  sprintf(__("Something is wrong with %s addon license and files. Please activate it using its license key. If this addon has not been purchased and downloaded from the official gVectors.com website, it's probably hacked and may lead to lots of security issues.", "wpdiscuz"), $value["name"]);
+					}
+					$adminNotices[$key]  = sprintf(__("%s addon was deactivated, because your license isn't valid.", "wpdiscuz"), $value["name"]);
 				}
 			} else {
 				$checkedData[$key] = [

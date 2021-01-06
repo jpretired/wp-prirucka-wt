@@ -77,7 +77,67 @@ class EPKB_Editor_Archive_Page_Config extends EPKB_Editor_Base_Config {
 				'settings'  => $settings
 			]];
 	}
+	
+	/**
+	 * Categories List zone
+	 * @return array
+	 */
+	private static function categories_layout_list_zone() {
 
+		$settings = [
+			'category_box_title_text_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => ' .eckb-acll__title',
+				'style_name' => 'color'
+			],
+			'category_box_container_background_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => '.eckb-article-cat-layout-list',
+				'style_name' => 'background-color'
+			],
+			'category_box_category_text_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => '.eckb-acll__cat-item__name',
+				'style_name' => 'color'
+			],
+			'category_box_count_background_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => '.eckb-acll__cat-item__count',
+				'style_name' => 'background-color'
+			],
+			'category_box_count_text_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => '.eckb-acll__cat-item__count',
+				'style_name' => 'color'
+			],
+			'category_box_count_border_color' => [
+				'editor_tab' => self::EDITOR_TAB_STYLE,
+				'target_selector' => '.eckb-acll__cat-item__count',
+				'style_name' => 'border-color'
+			],
+			'categories_layout_list_mode' => [
+				'editor_tab' => self::EDITOR_TAB_FEATURES,
+				'reload' => '1'
+			],
+			'categories_box_font_size' => [
+				'editor_tab' => self::EDITOR_TAB_FEATURES,
+				'styles' => [
+					'.eckb-article-cat-layout-list' => 'font-size',
+					'.eckb-article-cat-layout-list a' => 'font-size',
+				],
+				'style' => 'slider',
+				'postfix' => 'px'
+			],
+		];
+
+		return [
+			'categories_list' => [
+				'title'     =>  __( 'Categories List', 'echo-knowledge-base' ),
+				'classes'   => '.eckb-article-cat-layout-list',
+				'settings'  => $settings
+			]];
+	}
+	
 	/**
 	 * Retrieve Editor configuration
 	 * @param $kb_config
@@ -88,6 +148,7 @@ class EPKB_Editor_Archive_Page_Config extends EPKB_Editor_Base_Config {
 		// Result config
 		$editor_config = [];
 		$editor_config += self::archive_zone();
+		$editor_config += self::categories_layout_list_zone();
 
 		return self::get_editor_config( $kb_config, $editor_config, [], 'archive-page' );
 	}

@@ -81,7 +81,7 @@ class TextAreaField extends Field {
 
     public function frontHtml($value, $args) {
         $html = "<div class='wpd-custom-field wpd-cf-text'>";
-        $html .= "<div class='wpd-cf-label'>" . esc_html($args["name"]) . "</div> <div class='wpd-cf-value'> " . esc_html(apply_filters("wpdiscuz_custom_field_textarea", nl2br($value), $args)) . "</div>";
+        $html .= "<div class='wpd-cf-label'>" . esc_html($args["name"]) . "</div> <div class='wpd-cf-value'> " . wp_kses(apply_filters("wpdiscuz_custom_field_textarea", nl2br($value), $args), wp_kses_allowed_html("post")) . "</div>";
         $html .= "</div>";
         return $html;
     }

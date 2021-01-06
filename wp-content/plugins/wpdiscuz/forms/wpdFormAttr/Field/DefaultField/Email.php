@@ -85,8 +85,7 @@ class Email extends Field {
         }
 
         if ($email !== "" && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $messageArray["code"] = "wc_error_email_text";
-            wp_die(json_encode($messageArray));
+            wp_send_json_error("wc_error_email_text");
         }
 
         return $email;

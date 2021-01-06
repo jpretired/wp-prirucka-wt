@@ -709,7 +709,7 @@ class EPKB_Utilities {
 	 * @param bool|false $is_array
 	 * @param bool $return_error
 	 *
-	 * @return array|string|WP_Error or default or error if $return_error is true
+	 * @return array|string|default or error if $return_error is true
 	 */
 	public static function get_wp_option( $option_name, $default, $is_array=false, $return_error=false ) {
 		/** @var $wpdb Wpdb */
@@ -1454,6 +1454,13 @@ class EPKB_Utilities {
 		return defined( 'ELEMENTOR_VERSION' );
 	}
 
+	public static function is_link_editor_enabled() {
+		return defined('KBLK_PLUGIN_NAME');
+	}
+	public static function is_link_editor( $post ) {
+		return ! empty($post->post_mime_type) && ( $post->post_mime_type == 'kb_link' or $post->post_mime_type == 'kblink' );
+	}
+
 	public static function is_kb_main_page() {
 		global $eckb_is_kb_main_page;
 		$ix = (isset($eckb_is_kb_main_page) && $eckb_is_kb_main_page) || EPKB_Utilities::get('is_kb_main_page') == 1 ? 'mp' : 'ap';
@@ -1568,7 +1575,7 @@ class EPKB_Utilities {
 		$article_url = EPKB_KB_Handler::get_first_kb_article_url( $kb_config );
 		$article_url = empty($article_url) ? '' : add_query_arg( array('preopen' => 'settings'), $article_url );
 
-		$archive_url = EPKB_KB_Handler::get_first_kb_category_url( $kb_config );
+		$archive_url = EPKB_KB_Handler::get_kb_category_with_most_articles_url( $kb_config );
 		$archive_url = empty($archive_url) ? '' : add_query_arg( array('preopen' => 'settings'), $archive_url );
 
 		return [ 
