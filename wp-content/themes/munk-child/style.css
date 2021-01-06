@@ -1,0 +1,92 @@
+/*
+Theme Name: Munk Child
+Theme URI: https://wpmunk.com/
+Template: munk
+Author: MetricThemes
+Author URI: https://metricthemes.com/
+Description: Munk is fast and extensible multi purpose WordPress theme that comes with numerous customization options. Munk is highly customizable, built with WordPress and Industry standards theme that you can use to build any kind of websites whether it is blog, business, portfolio, WooCommerce store or niche websites like Spa, Restaurant, Wedding, Non Profit, Education, Hotel, etc. Munk is compatible with leading WordPress Page Builders like Elementor, Gutenberg, Brizy, Visual Composer, Beaver Builder, etc. Munk comes with customizer options which lets you customize the color, font, paddings and numerous other settings of your site. Munk also has a number of hooks and filters which lets the developers customize the layout and content of their WordPress sites. Besides that, We have also built a Munk Sites plugin which lets you import ready to use designs and layout with one click to kick start your next site development. View theme demos at https://wpmunk.com/instant-sites/
+Tags: one-column,two-columns,left-sidebar,right-sidebar,block-styles,wide-blocks,custom-background,custom-colors,custom-logo,custom-menu,featured-images,footer-widgets,theme-options,threaded-comments,translation-ready,blog,e-commerce,news
+Version: 1.0.16.1602257275
+Updated: 2020-10-09 17:27:55
+
+*/
+/*
+a,
+a .eckb-breadcrumb {
+    color: #bd2130 !important;
+}
+*/
+.obraz-ramecek {
+	border: solid;
+	color: #333;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.sidebar-main a {
+	color: #2694e8 !important;
+}
+.entry-content blockquote p{
+	width: 80%;
+}
+.epkb-article-level-1,
+.epkb-article-level-2 a {
+	font-size: 16px !important;
+}
+.section-head p {
+	font-size: 100% !important;
+	color: #333 !important;
+	margin-left: 10px !important;
+	line-height: 1.3 !important;
+}
+.epkb-section-body ul li {
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+h1, h2, h3, h4, h5 {
+	font-weight: 600;
+	color: #444;
+}
+code {
+    color: #333;
+    background: #ddd;
+    padding: 0 5px;
+}
+pre {
+    background: #f2f2f2;
+    padding: 6px;
+}
+#eckb-article-body blockquote{
+	border-left: 3px solid #808080;
+	position: relative;
+	padding: 0;
+	padding-left: 20px;
+	margin: 20px 0 0px 60px;
+}
+#eckb-article-body blockquote p{
+	color: #3A3A3A;
+	font-size: 16px;
+	font-weight: 500;
+	font-style: italic;
+	width: 80%;
+	padding-left: 5px;
+	padding-bottom: 10px;
+        background: #ffffdd !important;
+}
+#eckb-article-body blockquote p:before{
+	content: ' " ';
+	position: absolute;
+	font-weight: 600;
+	color: #808080;
+	font-size: 24px;
+	top: -10px;
+	left: 1%;
+}
+#eckb-article-page-container-v2 .eckb-article-toc .eckb-article-toc__inner ul li {
+        line-height: 1.5em;
+        margin: 4px 0;
+}
+.slb_template_tag .slb_template_tag_item .slb_template_tag_item_title {
+    font-family: Open sans !important;
+    font-size: 18px !important;
+}
+
